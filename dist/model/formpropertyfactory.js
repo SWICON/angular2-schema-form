@@ -34,7 +34,6 @@ var FormPropertyFactory = (function () {
         if (schema.$ref) {
             var refSchema = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
             refSchema.visibleIf = schema.visibleIf;
-            refSchema.widget = schema.widget || refSchema.widget;
             newProperty = this.createProperty(refSchema, parent, path);
         }
         else {
