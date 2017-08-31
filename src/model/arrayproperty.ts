@@ -38,7 +38,7 @@ export class ArrayProperty extends PropertyGroup {
   }
 
   public _hasValue(): boolean {
-    return this.value && this.value.length;
+    return true;
   }
 
   public _updateValue() {
