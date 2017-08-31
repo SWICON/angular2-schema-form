@@ -1,13 +1,13 @@
-import { AfterViewInit, OnInit } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ArrayProperty, FormProperty, ObjectProperty } from './model';
-export declare abstract class Widget<T extends FormProperty> implements OnInit {
+export declare abstract class Widget<T extends FormProperty> implements AfterViewInit {
     formProperty: T;
     control: FormControl;
     id: string;
     name: string;
     schema: any;
-    ngOnInit(): void;
+    ngAfterViewInit(): void;
 }
 export declare class ControlWidget extends Widget<FormProperty> implements AfterViewInit {
     ngAfterViewInit(): void;

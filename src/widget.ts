@@ -1,8 +1,8 @@
-import {AfterViewInit, OnInit} from '@angular/core';
+import {AfterViewInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ArrayProperty, FormProperty, ObjectProperty} from './model';
 
-export abstract class Widget<T extends FormProperty> implements OnInit {
+export abstract class Widget<T extends FormProperty> implements AfterViewInit {
   formProperty: T;
   control: FormControl;
 
@@ -10,7 +10,7 @@ export abstract class Widget<T extends FormProperty> implements OnInit {
   name: string = '';
   schema: any = {};
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.formProperty.control = this.control;
   }
 }
@@ -18,6 +18,7 @@ export abstract class Widget<T extends FormProperty> implements OnInit {
 export class ControlWidget extends Widget<FormProperty> implements AfterViewInit {
 
   ngAfterViewInit() {
+    super.ngAfterViewInit();
     const control = this.control;
     this.formProperty.valueChanges.subscribe((newValue) => {
       if (control.value !== newValue) {
@@ -37,6 +38,7 @@ export class ControlWidget extends Widget<FormProperty> implements AfterViewInit
 export class ArrayLayoutWidget extends Widget<ArrayProperty> implements AfterViewInit {
 
   ngAfterViewInit() {
+    super.ngAfterViewInit();
     const control = this.control;
     this.formProperty.errorsChanges.subscribe((errors) => {
       control.setErrors(errors, {emitEvent: true});
@@ -47,6 +49,7 @@ export class ArrayLayoutWidget extends Widget<ArrayProperty> implements AfterVie
 export class ObjectLayoutWidget extends Widget<ObjectProperty> implements AfterViewInit {
 
   ngAfterViewInit() {
+    super.ngAfterViewInit();
     const control = this.control;
     this.formProperty.errorsChanges.subscribe((errors) => {
       control.setErrors(errors, {emitEvent: true});

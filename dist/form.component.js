@@ -76,6 +76,15 @@ var FormComponent = (function () {
     FormComponent.prototype.reset = function () {
         this.rootProperty.reset(null, true);
     };
+    FormComponent.prototype.isDirty = function () {
+        var isDirty = false;
+        if (this.rootProperty instanceof PropertyGroup) {
+            this.rootProperty.forEachChildRecursive(function (field) {
+                isDirty = field.control.touched || field.control.dirty;
+            });
+        }
+        return isDirty;
+    };
     FormComponent.prototype.markAsTouched = function () {
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {

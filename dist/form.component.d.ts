@@ -29,6 +29,7 @@ export declare class FormComponent implements OnChanges {
     private setValidators();
     private setActions();
     reset(): void;
+    isDirty(): boolean;
     markAsTouched(): void;
     markAsUntouched(): void;
 }

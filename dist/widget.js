@@ -14,7 +14,7 @@ var Widget = (function () {
         this.name = '';
         this.schema = {};
     }
-    Widget.prototype.ngOnInit = function () {
+    Widget.prototype.ngAfterViewInit = function () {
         this.formProperty.control = this.control;
     };
     return Widget;
@@ -27,6 +27,7 @@ var ControlWidget = (function (_super) {
     }
     ControlWidget.prototype.ngAfterViewInit = function () {
         var _this = this;
+        _super.prototype.ngAfterViewInit.call(this);
         var control = this.control;
         this.formProperty.valueChanges.subscribe(function (newValue) {
             if (control.value !== newValue) {
@@ -49,6 +50,7 @@ var ArrayLayoutWidget = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     ArrayLayoutWidget.prototype.ngAfterViewInit = function () {
+        _super.prototype.ngAfterViewInit.call(this);
         var control = this.control;
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });
@@ -63,6 +65,7 @@ var ObjectLayoutWidget = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     ObjectLayoutWidget.prototype.ngAfterViewInit = function () {
+        _super.prototype.ngAfterViewInit.call(this);
         var control = this.control;
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });

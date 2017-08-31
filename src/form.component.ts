@@ -134,6 +134,16 @@ export class FormComponent implements OnChanges {
     this.rootProperty.reset(null, true);
   }
 
+  public isDirty() {
+    let isDirty = false;
+    if (this.rootProperty instanceof PropertyGroup) {
+      (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
+        isDirty = field.control.touched || field.control.dirty;
+      })
+    }
+    return isDirty;
+  }
+
   public markAsTouched() {
     if (this.rootProperty instanceof PropertyGroup) {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
