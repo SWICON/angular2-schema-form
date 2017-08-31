@@ -6,6 +6,9 @@ export declare class SchemaPreprocessor {
     private static createFieldsets(jsonSchema);
     private static replaceOrderByFieldsets(jsonSchema);
     private static normalizeWidget(fieldSchema);
+    private static checkAndCreateLayout(jsonSchema, path);
+    private static createLayout(jsonSchema);
+    private static normalizeLayout(layout, path);
     private static checkItems(jsonSchema, path);
     private static recursiveCheck(jsonSchema, path);
     private static removeRecursiveRefProperties(jsonSchema, definitionPath);

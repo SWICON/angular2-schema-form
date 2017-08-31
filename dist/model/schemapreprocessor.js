@@ -1,4 +1,5 @@
 import { isBlank } from './utils';
+import { isArray, isObject, isString } from 'util';
 function formatMessage(message, path) {
     return "Parsing error on " + path + ": " + message;
 }
@@ -18,7 +19,7 @@ var SchemaPreprocessor = (function () {
         jsonSchema = jsonSchema || {};
         if (jsonSchema.type === 'object') {
             SchemaPreprocessor.checkProperties(jsonSchema, path);
-            SchemaPreprocessor.checkAndCreateFieldsets(jsonSchema, path);
+            SchemaPreprocessor.checkAndCreateLayout(jsonSchema, path);
         }
         else if (jsonSchema.type === 'array') {
             SchemaPreprocessor.checkItems(jsonSchema, path);
@@ -101,6 +102,75 @@ var SchemaPreprocessor = (function () {
             widget = { 'id': widget };
         }
         fieldSchema.widget = widget;
+    };
+    SchemaPreprocessor.checkAndCreateLayout = function (jsonSchema, path) {
+        if (!jsonSchema.layout) {
+            SchemaPreprocessor.createLayout(jsonSchema);
+        }
+        else {
+            jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path);
+        }
+    };
+    SchemaPreprocessor.createLayout = function (jsonSchema) {
+        jsonSchema.layout = [];
+        Object.keys(jsonSchema.properties).forEach(function (key) {
+            jsonSchema.layout.push({
+                type: 'row',
+                items: [{
+                        key: key
+                    }]
+            });
+        });
+    };
+    SchemaPreprocessor.normalizeLayout = function (layout, path) {
+        var res = layout.map(function (item) {
+            if (isString(item)) {
+                item = {
+                    key: item
+                };
+            }
+            else if (item.key) {
+                // do nothing
+            }
+            else if (item.type) {
+                switch (item.type) {
+                    case 'row':
+                    case 'column':
+                    case 'tab':
+                    case 'step':
+                        item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                        break;
+                    case 'steps':
+                        if (!item.items.every(function (i) { return i.type === 'step'; })) {
+                            schemaError("'steps' layout element should contain only 'step' type of elements.", path);
+                        }
+                        else {
+                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                        }
+                        break;
+                    case 'tabs':
+                        if (!item.items.every(function (i) { return i.type === 'tab'; })) {
+                            schemaError("'tabs' layout element should contain only 'tab' type of elements.", path);
+                        }
+                        else {
+                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                        }
+                        break;
+                    default:
+                        schemaError('Unknown layout type.', path);
+                        break;
+                }
+            }
+            else if (isObject(item) && item.items && isArray(item.items)) {
+                item.type = 'row';
+                item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+            }
+            else {
+                schemaError('Unknown layout element.', path);
+            }
+            return item;
+        });
+        return res;
     };
     SchemaPreprocessor.checkItems = function (jsonSchema, path) {
         if (jsonSchema.items === undefined) {
