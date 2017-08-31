@@ -84,49 +84,51 @@ var utils = {
     }
 };
 export function interpolate(template, rootModel, parentModel) {
-    return template.replace(/{([^{}]*)}/g, function (a, b) {
-        if (!rootModel || !parentModel) {
-            return;
-        }
-        var result = b, temp = result, match;
-        // replace variables if any
-        if (match = VARIABLE_MATCHER.exec(result)) {
-            var resolved_1 = [];
-            do {
-                var str = match[0];
-                if (str.startsWith('$$')) {
-                    resolved_1.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
-                    temp = temp.replace(str, utils.resolveVariable(rootModel, str.replace('$$', '')));
-                }
-                else if (str.startsWith('$')) {
-                    resolved_1.push(utils.resolveVariable(parentModel, str.replace('$', '')));
-                    temp = temp.replace(str, utils.resolveVariable(parentModel, str.replace('$', '')));
-                }
-            } while (match = VARIABLE_MATCHER.exec(result));
-            if (['', undefined, null, NaN].every(function (f) { return !resolved_1.includes(f); })) {
-                result = temp;
-            }
-            else {
-                if (IS_DEV) {
-                    console.warn("Not all variables could resolved in template: " + template);
-                }
+    try {
+        return template.replace(/{([^{}]*)}/g, function (a, b) {
+            if (!rootModel || !parentModel) {
                 return;
             }
-        }
-        // eval aggregate functions
-        if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
-            temp = result;
-            do {
-                var func = match[1];
-                var params = match[2].split(',').map(function (i) { return i.trim(); });
-                temp = temp.replace(match[0], utils[func].apply(utils, params));
-            } while (match = AGGREGATE_FUNC_MATCHER.exec(result));
-            result = temp;
-        }
-        // execute arithmetic operators if any
-        if (ARITHMETIC_OP_MATCHER.test(result)) {
-            result = eval(result);
-        }
-        return result;
-    });
+            var result = b, temp = result, match;
+            // replace variables if any
+            var resolved = [];
+            if (match = VARIABLE_MATCHER.exec(result)) {
+                do {
+                    var str = match[0];
+                    if (str.startsWith('$$')) {
+                        resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
+                        temp = temp.replace(str, utils.resolveVariable(rootModel, str.replace('$$', '')));
+                    }
+                    else if (str.startsWith('$')) {
+                        resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
+                        temp = temp.replace(str, utils.resolveVariable(parentModel, str.replace('$', '')));
+                    }
+                } while (match = VARIABLE_MATCHER.exec(result));
+                if (['', undefined, null, NaN].every(function (f) { return !resolved.includes(f); })) {
+                    result = temp;
+                }
+                else {
+                    throw "Not all variables could resolved in template: " + template;
+                }
+            }
+            // eval aggregate functions
+            if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
+                temp = result;
+                do {
+                    var func = match[1];
+                    var params = match[2].split(',').map(function (i) { return i.trim(); });
+                    temp = temp.replace(match[0], utils[func].apply(utils, params));
+                } while (match = AGGREGATE_FUNC_MATCHER.exec(result));
+                result = temp;
+            }
+            // execute arithmetic operators if any
+            if (ARITHMETIC_OP_MATCHER.test(result)) {
+                result = eval(result);
+            }
+            return result;
+        });
+    }
+    catch (err) {
+        console.warn(err);
+    }
 }
