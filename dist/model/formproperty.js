@@ -37,9 +37,9 @@ var FormProperty = (function () {
         this._path = path;
         if (this.schema.template) {
             this.schema.readOnly = true;
-            this._root.valueChanges.subscribe(function (change) {
-                var value = interpolate(_this.schema.template, _this._root.value, _this.parent.value);
-                _this.setValue(value, false);
+            this._root.valueChanges.subscribe(function (rootValue) {
+                var value = interpolate(_this.schema.template, rootValue, _this.parent.value);
+                _this.setValue(value, true);
             });
         }
     }
