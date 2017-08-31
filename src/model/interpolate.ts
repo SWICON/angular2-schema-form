@@ -59,58 +59,58 @@ const utils = {
 };
 
 export function interpolate(template, rootModel, parentModel) {
-  try {
-    return template.replace(/{([^{}]*)}/g, function (a, b) {
-      if (!rootModel || !parentModel) {
-        return;
-      }
+  return template.replace(/{([^{}]*)}/g, function (a, b) {
+    if (!rootModel || !parentModel) {
+      return;
+    }
 
-      let result = b,
-        temp = result,
-        match;
+    let result = b,
+      temp = result,
+      match;
 
-      // replace variables if any
+    // replace variables if any
+    if (match = VARIABLE_MATCHER.exec(result)) {
       const resolved = [];
-      if (match = VARIABLE_MATCHER.exec(result)) {
-        do {
-          const str = match[0];
-          if (str.startsWith('$$')) {
-            resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
-            temp = temp.replace(str, utils.resolveVariable(rootModel, str.replace('$$', '')));
-          } else if (str.startsWith('$')) {
-            resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
-            temp = temp.replace(str, utils.resolveVariable(parentModel, str.replace('$', '')));
-          }
-        } while (match = VARIABLE_MATCHER.exec(result));
-
-        if (['', undefined, null, NaN].every(f => !resolved.includes(f))) {
-          result = temp;
-        } else {
-          throw `Not all variables could resolved in template: ${template}`;
+      do {
+        const str = match[0];
+        let toReplace = undefined;
+        if (str.startsWith('$$')) {
+          resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
+          toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''))
+        } else if (str.startsWith('$')) {
+          resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
+          toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
         }
+        if (['', undefined, null, NaN].includes(toReplace)) {
+          toReplace = '';
+        }
+        temp = temp.replace(str, toReplace);
+      } while (match = VARIABLE_MATCHER.exec(result));
+
+      if (['', undefined, null, NaN].some(f => resolved.includes(f))) {
+        console.warn(`Not all variables could resolved in template: ${template}`);
       }
+      result = temp;
+    }
 
-      // eval aggregate functions
-      if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
-        temp = result;
+    // eval aggregate functions
+    if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
+      temp = result;
 
-        do {
-          const func = match[1];
-          const params = match[2].split(',').map(i => i.trim());
-          temp = temp.replace(match[0], utils[func](...params));
-        } while (match = AGGREGATE_FUNC_MATCHER.exec(result));
+      do {
+        const func = match[1];
+        const params = match[2].split(',').map(i => i.trim());
+        temp = temp.replace(match[0], utils[func](...params));
+      } while (match = AGGREGATE_FUNC_MATCHER.exec(result));
 
-        result = temp;
-      }
+      result = temp;
+    }
 
-      // execute arithmetic operators if any
-      if (ARITHMETIC_OP_MATCHER.test(result)) {
-        result = eval(result);
-      }
+    // execute arithmetic operators if any
+    if (ARITHMETIC_OP_MATCHER.test(result)) {
+      result = eval(result);
+    }
 
-      return result;
-    });
-  } catch (err) {
-    console.warn(err);
-  }
+    return result;
+  }).trim();
 }
