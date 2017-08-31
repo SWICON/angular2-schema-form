@@ -18,7 +18,6 @@ export abstract class Widget<T extends FormProperty> implements AfterViewInit {
 export class ControlWidget extends Widget<FormProperty> implements AfterViewInit {
 
   ngAfterViewInit() {
-    super.ngAfterViewInit();
     const control = this.control;
     this.formProperty.valueChanges.subscribe((newValue) => {
       if (control.value !== newValue) {
