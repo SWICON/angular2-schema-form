@@ -31,5 +31,7 @@ export declare class FormComponent implements OnChanges {
     reset(): void;
     isDirty(): boolean;
     markAsTouched(): void;
+    markAsDirty(): void;
     markAsUntouched(): void;
+    markAsPristine(): void;
 }

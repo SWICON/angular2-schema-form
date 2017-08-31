@@ -154,11 +154,31 @@ export class FormComponent implements OnChanges {
     }
   }
 
+  public markAsDirty() {
+    if (this.rootProperty instanceof PropertyGroup) {
+      (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
+        if (field.control) {
+          field.control.markAsDirty();
+        }
+      })
+    }
+  }
+
   public markAsUntouched() {
     if (this.rootProperty instanceof PropertyGroup) {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
         if (field.control) {
           field.control.markAsUntouched();
+        }
+      })
+    }
+  }
+
+  public markAsPristine() {
+    if (this.rootProperty instanceof PropertyGroup) {
+      (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
+        if (field.control) {
+          field.control.markAsPristine();
         }
       })
     }

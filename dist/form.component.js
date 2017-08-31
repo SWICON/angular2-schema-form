@@ -94,11 +94,29 @@ var FormComponent = (function () {
             });
         }
     };
+    FormComponent.prototype.markAsDirty = function () {
+        if (this.rootProperty instanceof PropertyGroup) {
+            this.rootProperty.forEachChildRecursive(function (field) {
+                if (field.control) {
+                    field.control.markAsDirty();
+                }
+            });
+        }
+    };
     FormComponent.prototype.markAsUntouched = function () {
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {
                 if (field.control) {
                     field.control.markAsUntouched();
+                }
+            });
+        }
+    };
+    FormComponent.prototype.markAsPristine = function () {
+        if (this.rootProperty instanceof PropertyGroup) {
+            this.rootProperty.forEachChildRecursive(function (field) {
+                if (field.control) {
+                    field.control.markAsPristine();
                 }
             });
         }
