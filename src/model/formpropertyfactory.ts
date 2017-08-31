@@ -33,6 +33,9 @@ export class FormPropertyFactory {
     if (schema.$ref) {
       const refSchema = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
       refSchema.visibleIf = schema.visibleIf;
+      if (schema.widget && schema.widget.id) {
+        refSchema.widget = schema.widget;
+      }
       newProperty = this.createProperty(refSchema, parent, path);
     } else {
       switch (schema.type) {
