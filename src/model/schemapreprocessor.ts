@@ -1,4 +1,5 @@
 import {isBlank} from './utils';
+import {isArray, isObject, isString} from 'util';
 
 function formatMessage(message, path) {
   return `Parsing error on ${path}: ${message}`;
@@ -20,7 +21,7 @@ export class SchemaPreprocessor {
     jsonSchema = jsonSchema || {};
     if (jsonSchema.type === 'object') {
       SchemaPreprocessor.checkProperties(jsonSchema, path);
-      SchemaPreprocessor.checkAndCreateFieldsets(jsonSchema, path);
+      SchemaPreprocessor.checkAndCreateLayout(jsonSchema, path);
     } else if (jsonSchema.type === 'array') {
       SchemaPreprocessor.checkItems(jsonSchema, path);
     }
@@ -103,6 +104,73 @@ export class SchemaPreprocessor {
       widget = {'id': widget};
     }
     fieldSchema.widget = widget;
+  }
+
+  private static checkAndCreateLayout(jsonSchema: any, path: string) {
+    if (!jsonSchema.layout) {
+      SchemaPreprocessor.createLayout(jsonSchema);
+    } else {
+      jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path);
+    }
+  }
+
+  private static createLayout(jsonSchema: any) {
+    jsonSchema.layout = [];
+    Object.keys(jsonSchema.properties).forEach(key => {
+      jsonSchema.layout.push({
+        type: 'row',
+        items: [{
+          key: key
+        }]
+      });
+    });
+  }
+
+  private static normalizeLayout(layout: any[], path: string) {
+    const res = layout.map(item => {
+      if (isString(item)) {
+        item = {
+          key: item
+        };
+      } else if (item.key) {
+        // do nothing
+      } else if (item.type) {
+        switch (item.type) {
+          case 'row':
+          case 'column':
+          case 'tab':
+          case 'step':
+            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+            break;
+          case 'steps':
+            if (!item.items.every(i => i.type === 'step')) {
+              schemaError(`'steps' layout element should contain only 'step' type of elements.`, path);
+            } else {
+              item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+            }
+            break;
+          case 'tabs':
+            if (!item.items.every(i => i.type === 'tab')) {
+              schemaError(`'tabs' layout element should contain only 'tab' type of elements.`, path);
+            } else {
+              item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+            }
+            break;
+          default:
+            schemaError('Unknown layout type.', path);
+            break;
+        }
+      } else if (isObject(item) && item.items && isArray(item.items)) {
+        item.type = 'row';
+        item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+      } else {
+        schemaError('Unknown layout element.', path);
+      }
+
+      return item;
+    });
+
+    return res;
   }
 
   private static checkItems(jsonSchema, path) {
