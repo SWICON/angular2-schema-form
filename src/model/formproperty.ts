@@ -42,7 +42,7 @@ export abstract class FormProperty {
 
     if (this.schema.template) {
       this.schema.readOnly = true;
-      this._root.valueChanges.subscribe(rootValue => {
+      this._root.valueChanges.distinctUntilChanged().subscribe(rootValue => {
         const value = interpolate(this.schema.template, rootValue, this.parent.value);
         this.setValue(value, true);
       });
