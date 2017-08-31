@@ -1,8 +1,8 @@
-import {AfterViewInit} from '@angular/core';
+import {AfterViewInit, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {ArrayProperty, FormProperty, ObjectProperty} from './model';
 
-export abstract class Widget<T extends FormProperty> {
+export abstract class Widget<T extends FormProperty> implements OnInit {
   formProperty: T;
   control: FormControl;
 
@@ -10,7 +10,7 @@ export abstract class Widget<T extends FormProperty> {
   name: string = '';
   schema: any = {};
 
-  constructor() {
+  ngOnInit() {
     this.formProperty.control = this.control;
   }
 }

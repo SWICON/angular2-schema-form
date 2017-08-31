@@ -13,8 +13,10 @@ var Widget = (function () {
         this.id = '';
         this.name = '';
         this.schema = {};
-        this.formProperty.control = this.control;
     }
+    Widget.prototype.ngOnInit = function () {
+        this.formProperty.control = this.control;
+    };
     return Widget;
 }());
 export { Widget };
