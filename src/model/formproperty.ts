@@ -7,6 +7,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
+import {Validator} from './validator';
 
 export abstract class FormProperty {
   public schemaValidator: Function;
@@ -139,6 +140,10 @@ export abstract class FormProperty {
   public extendErrors(errors) {
     errors = this.mergeErrors(this._errors || [], errors);
     this.setErrors(errors);
+  }
+
+  public addValidator(validator: Validator) {
+    this.validatorRegistry.register(this.path, validator);
   }
 
   searchProperty(path: string): FormProperty {

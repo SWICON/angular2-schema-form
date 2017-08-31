@@ -2,7 +2,7 @@ node_modules/
 .DS_Store
 npm-debug.log
 compiled/
-dist/
+#dist/
 coverage/
 .idea
 yarn.lock
@@ -11,7 +11,7 @@ release/
 *.metadata.json
 *.ngfactory.ts
 *.tgz
-/dist
+#/dist
 
 # test subproject and demo
 /demo
