@@ -27,6 +27,7 @@ var ControlWidget = (function (_super) {
     }
     ControlWidget.prototype.ngAfterViewInit = function () {
         var _this = this;
+        _super.prototype.ngAfterViewInit.call(this);
         var control = this.control;
         this.formProperty.valueChanges.subscribe(function (newValue) {
             if (control.value !== newValue) {
