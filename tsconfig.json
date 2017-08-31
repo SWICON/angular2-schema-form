@@ -20,7 +20,7 @@
         ],
         "lib": [
             "dom",
-            "es2015"
+            "es7"
         ],
         "paths": {
             "rxjs/*": ["node_modules/rxjs/*"]

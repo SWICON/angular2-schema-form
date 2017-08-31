@@ -14,8 +14,10 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
+import { interpolate } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
+        var _this = this;
         this.validatorRegistry = validatorRegistry;
         this.schema = schema;
         this._value = null;
@@ -33,6 +35,13 @@ var FormProperty = (function () {
             this._root = this;
         }
         this._path = path;
+        if (this.schema.template) {
+            this.schema.readOnly = true;
+            this._root.valueChanges.subscribe(function (change) {
+                var value = interpolate(_this.schema.template, _this._root.value, _this.parent.value);
+                _this.setValue(value, false);
+            });
+        }
     }
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
         get: function () {

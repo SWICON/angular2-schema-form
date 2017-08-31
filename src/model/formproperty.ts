@@ -9,6 +9,7 @@ import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
 import {Validator} from './validator';
 import {FormControl} from '@angular/forms';
+import {interpolate} from './interpolate';
 
 export abstract class FormProperty {
   public schemaValidator: Function;
@@ -38,6 +39,14 @@ export abstract class FormProperty {
       this._root = <PropertyGroup><any>this;
     }
     this._path = path;
+
+    if (this.schema.template) {
+      this.schema.readOnly = true;
+      this._root.valueChanges.subscribe(change => {
+        const value = interpolate(this.schema.template, this._root.value, this.parent.value);
+        this.setValue(value, false);
+      });
+    }
   }
 
   public get valueChanges() {
