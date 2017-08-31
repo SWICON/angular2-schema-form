@@ -88,14 +88,18 @@ var FormComponent = (function () {
     FormComponent.prototype.markAsTouched = function () {
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {
-                field.control.markAsTouched();
+                if (field.control) {
+                    field.control.markAsTouched();
+                }
             });
         }
     };
     FormComponent.prototype.markAsUntouched = function () {
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {
-                field.control.markAsTouched();
+                if (field.control) {
+                    field.control.markAsUntouched();
+                }
             });
         }
     };

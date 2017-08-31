@@ -147,7 +147,9 @@ export class FormComponent implements OnChanges {
   public markAsTouched() {
     if (this.rootProperty instanceof PropertyGroup) {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
-        field.control.markAsTouched();
+        if (field.control) {
+          field.control.markAsTouched();
+        }
       })
     }
   }
@@ -155,7 +157,9 @@ export class FormComponent implements OnChanges {
   public markAsUntouched() {
     if (this.rootProperty instanceof PropertyGroup) {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
-        field.control.markAsTouched();
+        if (field.control) {
+          field.control.markAsUntouched();
+        }
       })
     }
   }
