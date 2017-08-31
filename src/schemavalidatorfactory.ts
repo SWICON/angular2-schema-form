@@ -24,8 +24,7 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
 
       this.zschema.validate(value, schema);
       let err = this.zschema.getLastErrors();
-
-      this.denormalizeRequiredPropertyPaths(err);
+      err = this.denormalizeRequiredPropertyPaths(err);
 
       return err || null;
     };
@@ -43,12 +42,21 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
 
   private denormalizeRequiredPropertyPaths(err: any[]) {
     if (err && err.length) {
-      err = err.map(error => {
+      return err.reduce((result, error) => {
         if (error.path === '#/' && error.code === 'OBJECT_MISSING_REQUIRED_PROPERTY') {
-          error.path = `${error.path}${error.params[0]}`;
+          error.path += error.params[0];
+          result.push(error);
+        } else if (error.path === '#/' && error.inner) {
+          const inners = error.inner.map(ierr => {
+            if (ierr.path === '#/') {
+              ierr.path += ierr.params[0];
+            }
+            return ierr;
+          });
+          result = result.concat(inners);
         }
-        return error;
-      });
+        return result;
+      }, []);
     }
   }
 

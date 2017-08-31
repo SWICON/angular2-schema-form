@@ -30,7 +30,7 @@ var ZSchemaValidatorFactory = (function (_super) {
             }
             _this.zschema.validate(value, schema);
             var err = _this.zschema.getLastErrors();
-            _this.denormalizeRequiredPropertyPaths(err);
+            err = _this.denormalizeRequiredPropertyPaths(err);
             return err || null;
         };
     };
@@ -46,12 +46,22 @@ var ZSchemaValidatorFactory = (function (_super) {
     };
     ZSchemaValidatorFactory.prototype.denormalizeRequiredPropertyPaths = function (err) {
         if (err && err.length) {
-            err = err.map(function (error) {
+            return err.reduce(function (result, error) {
                 if (error.path === '#/' && error.code === 'OBJECT_MISSING_REQUIRED_PROPERTY') {
-                    error.path = "" + error.path + error.params[0];
+                    error.path += error.params[0];
+                    result.push(error);
                 }
-                return error;
-            });
+                else if (error.path === '#/' && error.inner) {
+                    var inners = error.inner.map(function (ierr) {
+                        if (ierr.path === '#/') {
+                            ierr.path += ierr.params[0];
+                        }
+                        return ierr;
+                    });
+                    result = result.concat(inners);
+                }
+                return result;
+            }, []);
         }
     };
     ZSchemaValidatorFactory.prototype.getDefinition = function (schema, ref) {
