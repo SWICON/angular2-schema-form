@@ -3,6 +3,7 @@ import { ActionRegistry, FormPropertyFactory, SchemaPreprocessor, ValidatorRegis
 import { SchemaValidatorFactory, ZSchemaValidatorFactory } from './schemavalidatorfactory';
 import { WidgetFactory } from './widgetfactory';
 import { TerminatorService } from './terminator.service';
+import { PropertyGroup } from './model/formproperty';
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
     return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
 }
@@ -74,6 +75,20 @@ var FormComponent = (function () {
     };
     FormComponent.prototype.reset = function () {
         this.rootProperty.reset(null, true);
+    };
+    FormComponent.prototype.markAsTouched = function () {
+        if (this.rootProperty instanceof PropertyGroup) {
+            this.rootProperty.forEachChildRecursive(function (field) {
+                field.control.markAsTouched();
+            });
+        }
+    };
+    FormComponent.prototype.markAsUntouched = function () {
+        if (this.rootProperty instanceof PropertyGroup) {
+            this.rootProperty.forEachChildRecursive(function (field) {
+                field.control.markAsTouched();
+            });
+        }
     };
     FormComponent.decorators = [
         { type: Component, args: [{

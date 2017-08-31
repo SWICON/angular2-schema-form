@@ -9,6 +9,10 @@ export abstract class Widget<T extends FormProperty> {
   id: string = '';
   name: string = '';
   schema: any = {};
+
+  constructor() {
+    this.formProperty.control = this.control;
+  }
 }
 
 export class ControlWidget extends Widget<FormProperty> implements AfterViewInit {

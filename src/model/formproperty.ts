@@ -8,9 +8,11 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
 import {Validator} from './validator';
+import {FormControl} from '@angular/forms';
 
 export abstract class FormProperty {
   public schemaValidator: Function;
+  public control: FormControl;
 
   _value: any = null;
   _errors: any = null;

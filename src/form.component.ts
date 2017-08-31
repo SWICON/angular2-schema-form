@@ -20,6 +20,7 @@ import {
 import {SchemaValidatorFactory, ZSchemaValidatorFactory} from './schemavalidatorfactory';
 import {WidgetFactory} from './widgetfactory';
 import {TerminatorService} from './terminator.service';
+import {PropertyGroup} from './model/formproperty';
 
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
   return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
@@ -131,5 +132,21 @@ export class FormComponent implements OnChanges {
 
   public reset() {
     this.rootProperty.reset(null, true);
+  }
+
+  public markAsTouched() {
+    if (this.rootProperty instanceof PropertyGroup) {
+      (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
+        field.control.markAsTouched();
+      })
+    }
+  }
+
+  public markAsUntouched() {
+    if (this.rootProperty instanceof PropertyGroup) {
+      (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
+        field.control.markAsTouched();
+      })
+    }
   }
 }

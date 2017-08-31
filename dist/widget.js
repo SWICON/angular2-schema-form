@@ -13,6 +13,7 @@ var Widget = (function () {
         this.id = '';
         this.name = '';
         this.schema = {};
+        this.formProperty.control = this.control;
     }
     return Widget;
 }());

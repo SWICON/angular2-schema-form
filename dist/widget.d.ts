@@ -7,6 +7,7 @@ export declare abstract class Widget<T extends FormProperty> {
     id: string;
     name: string;
     schema: any;
+    constructor();
 }
 export declare class ControlWidget extends Widget<FormProperty> implements AfterViewInit {
     ngAfterViewInit(): void;
