@@ -42,9 +42,11 @@ export abstract class FormProperty {
 
     if (this.schema.template) {
       this.schema.readOnly = true;
-      this._root.valueChanges.distinctUntilChanged().subscribe(() => {
-        const value = interpolate(this.schema.template, this._root.value, this.parent.value);
-        this.setValue(value, true);
+      this._root.valueChanges.subscribe(rootValue => {
+        const newValue = interpolate(this.schema.template, rootValue, this.parent.value);
+        if (this.value !== newValue) {
+          this.setValue(newValue, false);
+        }
       });
     }
   }

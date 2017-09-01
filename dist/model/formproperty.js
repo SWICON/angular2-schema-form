@@ -37,9 +37,11 @@ var FormProperty = (function () {
         this._path = path;
         if (this.schema.template) {
             this.schema.readOnly = true;
-            this._root.valueChanges.distinctUntilChanged().subscribe(function () {
-                var value = interpolate(_this.schema.template, _this._root.value, _this.parent.value);
-                _this.setValue(value, true);
+            this._root.valueChanges.subscribe(function (rootValue) {
+                var newValue = interpolate(_this.schema.template, rootValue, _this.parent.value);
+                if (_this.value !== newValue) {
+                    _this.setValue(newValue, false);
+                }
             });
         }
     }
