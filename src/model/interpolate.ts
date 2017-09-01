@@ -1,4 +1,3 @@
-const IS_DEV = process.env.NODE_ENV === 'development';
 const VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 const AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 const ARITHMETIC_OP_MATCHER = /[()%+\-\/]|\*(?![^[]*])/g;
@@ -58,8 +57,15 @@ const utils = {
   }
 };
 
+function allResolved(resolved) {
+  return ['', undefined, null, NaN].every(f => !resolved.includes(f));
+}
+
 export function interpolate(template, rootModel, parentModel) {
-  return template.replace(/{([^{}]*)}/g, function (a, b) {
+  const numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
+  const resolved = [];
+
+  const replacedTmpl = template.replace(/{([^{}]*)}/g, function (a, b) {
     if (!rootModel || !parentModel) {
       return;
     }
@@ -70,7 +76,6 @@ export function interpolate(template, rootModel, parentModel) {
 
     // replace variables if any
     if (match = VARIABLE_MATCHER.exec(result)) {
-      const resolved = [];
       do {
         const str = match[0];
         let toReplace = undefined;
@@ -87,9 +92,6 @@ export function interpolate(template, rootModel, parentModel) {
         temp = temp.replace(str, toReplace);
       } while (match = VARIABLE_MATCHER.exec(result));
 
-      // if (['', undefined, null, NaN].some(f => resolved.includes(f))) {
-      //   console.warn(`Not all variables could resolved in template: ${template}`);
-      // }
       result = temp;
     }
 
@@ -112,5 +114,7 @@ export function interpolate(template, rootModel, parentModel) {
     }
 
     return result;
-  }).trim();
+  });
+
+  return !numOps ? replacedTmpl.trim() : allResolved(resolved) ? replacedTmpl : null;
 }

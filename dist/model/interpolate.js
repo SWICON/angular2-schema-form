@@ -1,4 +1,3 @@
-var IS_DEV = process.env.NODE_ENV === 'development';
 var VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 var ARITHMETIC_OP_MATCHER = /[()%+\-\/]|\*(?![^[]*])/g;
@@ -83,15 +82,19 @@ var utils = {
         });
     }
 };
+function allResolved(resolved) {
+    return ['', undefined, null, NaN].every(function (f) { return !resolved.includes(f); });
+}
 export function interpolate(template, rootModel, parentModel) {
-    return template.replace(/{([^{}]*)}/g, function (a, b) {
+    var numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
+    var resolved = [];
+    var replacedTmpl = template.replace(/{([^{}]*)}/g, function (a, b) {
         if (!rootModel || !parentModel) {
             return;
         }
         var result = b, temp = result, match;
         // replace variables if any
         if (match = VARIABLE_MATCHER.exec(result)) {
-            var resolved = [];
             do {
                 var str = match[0];
                 var toReplace = undefined;
@@ -108,9 +111,6 @@ export function interpolate(template, rootModel, parentModel) {
                 }
                 temp = temp.replace(str, toReplace);
             } while (match = VARIABLE_MATCHER.exec(result));
-            // if (['', undefined, null, NaN].some(f => resolved.includes(f))) {
-            //   console.warn(`Not all variables could resolved in template: ${template}`);
-            // }
             result = temp;
         }
         // eval aggregate functions
@@ -128,5 +128,6 @@ export function interpolate(template, rootModel, parentModel) {
             result = eval(result);
         }
         return result;
-    }).trim();
+    });
+    return !numOps ? replacedTmpl.trim() : allResolved(resolved) ? replacedTmpl : null;
 }
