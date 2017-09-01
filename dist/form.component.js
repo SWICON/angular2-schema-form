@@ -80,7 +80,9 @@ var FormComponent = (function () {
         var isDirty = false;
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {
-                isDirty = field.control && (field.control.touched || field.control.dirty);
+                if (!isDirty) {
+                    isDirty = field.control && (field.control.touched || field.control.dirty);
+                }
             });
         }
         return isDirty;
