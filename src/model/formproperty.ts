@@ -101,6 +101,9 @@ export abstract class FormProperty {
       this.parent.updateValueAndValidity(onlySelf, emitEvent);
     }
 
+    if (this.schema.immutable && this._hasValue()) {
+      this.control.disable();
+    }
   }
 
   /**
