@@ -39,16 +39,6 @@ export abstract class FormProperty {
       this._root = <PropertyGroup><any>this;
     }
     this._path = path;
-
-    if (this.schema.template) {
-      this.schema.readOnly = true;
-      this._root.valueChanges.subscribe(rootValue => {
-        const newValue = interpolate(this.schema.template, rootValue, this.parent.value);
-        if (this.value !== newValue) {
-          this.setValue(newValue, false);
-        }
-      });
-    }
   }
 
   public get valueChanges() {
@@ -76,6 +66,13 @@ export abstract class FormProperty {
   }
 
   public get value() {
+    if (this.schema.template) {
+      const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
+      if (this._value !== newValue) {
+        this._value = newValue;
+      }
+    }
+
     return this._value;
   }
 
