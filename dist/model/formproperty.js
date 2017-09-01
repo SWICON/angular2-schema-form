@@ -115,9 +115,6 @@ var FormProperty = (function () {
         if (this.parent && !onlySelf) {
             this.parent.updateValueAndValidity(onlySelf, emitEvent);
         }
-        if (this.schema.immutable && this._hasValue()) {
-            this.control.disable();
-        }
     };
     /**
      * @internal
