@@ -35,6 +35,9 @@ var AtomicProperty = (function (_super) {
             }
         }
         this._value = value;
+        if (this.schema.immutable && this._hasValue()) {
+            this.control.disable();
+        }
     };
     AtomicProperty.prototype._hasValue = function () {
         return this.fallbackValue() !== this.value;
