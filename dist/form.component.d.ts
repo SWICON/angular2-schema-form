@@ -26,6 +26,7 @@ export declare class FormComponent implements OnChanges {
     rootProperty: FormProperty;
     constructor(formPropertyFactory: FormPropertyFactory, actionRegistry: ActionRegistry, validatorRegistry: ValidatorRegistry, cdr: ChangeDetectorRef, terminator: TerminatorService);
     ngOnChanges(changes: any): void;
+    private setImmutableChildren();
     private setValidators();
     private setActions();
     reset(): void;

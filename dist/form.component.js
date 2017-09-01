@@ -50,8 +50,16 @@ var FormComponent = (function () {
         }
         if (this.schema && (changes.model || changes.schema)) {
             this.rootProperty.reset(this.model, false);
+            this.setImmutableChildren();
             this.cdr.detectChanges();
         }
+    };
+    FormComponent.prototype.setImmutableChildren = function () {
+        this.rootProperty.forEachChildRecursive(function (child) {
+            if (child.value && child.schema.immutable) {
+                child.schema.readOnly = true;
+            }
+        });
     };
     FormComponent.prototype.setValidators = function () {
         this.validatorRegistry.clear();

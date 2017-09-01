@@ -104,8 +104,17 @@ export class FormComponent implements OnChanges {
 
     if (this.schema && (changes.model || changes.schema )) {
       this.rootProperty.reset(this.model, false);
+      this.setImmutableChildren();
       this.cdr.detectChanges();
     }
+  }
+
+  private setImmutableChildren() {
+    (<PropertyGroup>this.rootProperty).forEachChildRecursive(child => {
+      if (child.value && child.schema.immutable) {
+        child.schema.readOnly = true;
+      }
+    })
   }
 
   private setValidators() {
