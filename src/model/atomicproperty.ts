@@ -23,7 +23,7 @@ export abstract class AtomicProperty extends FormProperty {
     this._value = value;
 
     if (this.schema.immutable && this._hasValue()) {
-      this.control.disable();
+      this.schema.readOnly = true;
     }
   }
 
