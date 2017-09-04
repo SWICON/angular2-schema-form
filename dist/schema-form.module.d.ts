@@ -1,4 +1,8 @@
-import { ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, Provider } from '@angular/core';
+export interface SchemaFormModuleConfig {
+    widgetRegistry?: Provider;
+    validatorFactory?: Provider;
+}
 export declare class SchemaFormModule {
-    static forRoot(): ModuleWithProviders;
+    static forRoot(config?: SchemaFormModuleConfig): ModuleWithProviders;
 }

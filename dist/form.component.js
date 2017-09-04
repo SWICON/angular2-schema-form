@@ -1,13 +1,12 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActionRegistry, FormPropertyFactory, SchemaPreprocessor, ValidatorRegistry } from './model';
-import { SchemaValidatorFactory, ZSchemaValidatorFactory } from './schemavalidatorfactory';
+import { SchemaValidatorFactory } from './schemavalidatorfactory';
 import { WidgetFactory } from './widgetfactory';
 import { TerminatorService } from './terminator.service';
 import { PropertyGroup } from './model/formproperty';
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
     return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
 }
-;
 var FormComponent = (function () {
     function FormComponent(formPropertyFactory, actionRegistry, validatorRegistry, cdr, terminator) {
         this.formPropertyFactory = formPropertyFactory;
@@ -133,9 +132,6 @@ var FormComponent = (function () {
                         SchemaPreprocessor,
                         WidgetFactory,
                         {
-                            provide: SchemaValidatorFactory,
-                            useClass: ZSchemaValidatorFactory
-                        }, {
                             provide: FormPropertyFactory,
                             useFactory: useFactory,
                             deps: [SchemaValidatorFactory, ValidatorRegistry]

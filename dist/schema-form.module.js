@@ -13,18 +13,13 @@ import { FormElementComponentAction } from "./formelement.action.component";
 var SchemaFormModule = (function () {
     function SchemaFormModule() {
     }
-    SchemaFormModule.forRoot = function () {
+    SchemaFormModule.forRoot = function (config) {
+        if (config === void 0) { config = {}; }
         return {
             ngModule: SchemaFormModule,
             providers: [
-                {
-                    provide: WidgetRegistry,
-                    useValue: DefaultWidgetRegistry
-                },
-                {
-                    provide: SchemaValidatorFactory,
-                    useValue: ZSchemaValidatorFactory
-                }
+                config.widgetRegistry || { provide: WidgetRegistry, useClass: DefaultWidgetRegistry },
+                config.validatorFactory || { provide: SchemaValidatorFactory, useClass: ZSchemaValidatorFactory }
             ]
         };
     };

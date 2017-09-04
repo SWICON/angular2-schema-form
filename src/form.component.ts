@@ -24,7 +24,7 @@ import {PropertyGroup} from './model/formproperty';
 
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
   return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
-};
+}
 
 @Component({
   selector: 'sf-form',
@@ -39,9 +39,6 @@ export function useFactory(schemaValidatorFactory, validatorRegistry) {
     SchemaPreprocessor,
     WidgetFactory,
     {
-      provide: SchemaValidatorFactory,
-      useClass: ZSchemaValidatorFactory
-    }, {
       provide: FormPropertyFactory,
       useFactory: useFactory,
       deps: [SchemaValidatorFactory, ValidatorRegistry]
