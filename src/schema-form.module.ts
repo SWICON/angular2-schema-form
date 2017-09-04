@@ -30,11 +30,6 @@ import {DefaultWidgetRegistry} from './defaultwidgets';
 import {SchemaValidatorFactory, ZSchemaValidatorFactory} from './schemavalidatorfactory';
 import {FormElementComponentAction} from "./formelement.action.component";
 
-export interface SchemaFormModuleConfig {
-  widgetRegistry?: Provider,
-  validatorFactory?: Provider
-}
-
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [
@@ -89,13 +84,4 @@ export interface SchemaFormModuleConfig {
   ]
 })
 export class SchemaFormModule {
-  static forRoot(config: SchemaFormModuleConfig = {}): ModuleWithProviders {
-    return {
-      ngModule: SchemaFormModule,
-      providers: [
-        config.widgetRegistry || {provide: WidgetRegistry, useClass: DefaultWidgetRegistry},
-        config.validatorFactory || {provide: SchemaValidatorFactory, useClass: ZSchemaValidatorFactory}
-      ]
-    };
-  }
 }
