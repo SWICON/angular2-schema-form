@@ -139,12 +139,11 @@ export class SchemaPreprocessor {
           case 'row':
           case 'column':
           case 'tab':
-          case 'step':
             item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
             break;
           case 'steps':
-            if (!item.items.every(i => i.type === 'step')) {
-              schemaError(`'steps' layout element should contain only 'step' type of elements.`, path);
+            if (!item.items.every(i => i.hasOwnProperty('key') && i.hasOwnProperty('title'))) {
+              schemaError(`'step' layout element should contain 'key' and 'title' properties.`, path);
             } else {
               item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
             }
