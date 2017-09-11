@@ -20,7 +20,7 @@ export abstract class FormProperty {
   private _valueChanges = new BehaviorSubject<any>(null);
   private _errorsChanges = new BehaviorSubject<any>(null);
   private _visible = true;
-  private _visibilityChanges = new BehaviorSubject<boolean>(true);
+  public _visibilityChanges = new BehaviorSubject<boolean>(true);
   private _root: PropertyGroup;
   private _parent: PropertyGroup;
   private _path: string;

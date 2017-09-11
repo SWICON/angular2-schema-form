@@ -17,7 +17,7 @@ export declare abstract class FormProperty {
     private _valueChanges;
     private _errorsChanges;
     private _visible;
-    private _visibilityChanges;
+    _visibilityChanges: BehaviorSubject<boolean>;
     private _root;
     private _parent;
     private _path;
