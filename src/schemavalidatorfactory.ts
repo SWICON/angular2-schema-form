@@ -44,12 +44,12 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
     if (err && err.length) {
       return err.reduce((result, error) => {
         if (error.path === '#/' && error.code === 'OBJECT_MISSING_REQUIRED_PROPERTY') {
-          error.path += error.params[0];
+          error.path = error.params[0];
           result.push(error);
         } else if (error.path === '#/' && error.inner) {
           const inners = error.inner.map(ierr => {
             if (ierr.path === '#/') {
-              ierr.path += ierr.params[0];
+              ierr.path = ierr.params[0];
             }
             return ierr;
           });
