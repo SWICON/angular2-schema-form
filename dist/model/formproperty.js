@@ -200,7 +200,7 @@ var FormProperty = (function () {
                     if (property) {
                         var valueCheck = property.valueChanges.map(function (value) {
                             if (visibleIf[dependencyPath].indexOf('$ANY$') !== -1) {
-                                return value.length > 0;
+                                return value && value.length > 0;
                             }
                             else {
                                 return visibleIf[dependencyPath].indexOf(value) !== -1;
