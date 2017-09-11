@@ -63,6 +63,9 @@ var ZSchemaValidatorFactory = (function (_super) {
                 return result;
             }, []);
         }
+        else {
+            return err;
+        }
     };
     ZSchemaValidatorFactory.prototype.getDefinition = function (schema, ref) {
         var foundSchema = schema;

@@ -57,6 +57,8 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
         }
         return result;
       }, []);
+    } else {
+      return err;
     }
   }
 
