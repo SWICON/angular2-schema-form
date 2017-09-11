@@ -54,11 +54,11 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
             return ierr;
           });
           result = result.concat(inners);
+        } else {
+          result = result.concat(err);
         }
         return result;
       }, []);
-    } else {
-      return err;
     }
   }
 

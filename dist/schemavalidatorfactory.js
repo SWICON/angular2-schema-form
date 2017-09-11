@@ -60,11 +60,11 @@ var ZSchemaValidatorFactory = (function (_super) {
                     });
                     result = result.concat(inners);
                 }
+                else {
+                    result = result.concat(err);
+                }
                 return result;
             }, []);
-        }
-        else {
-            return err;
         }
     };
     ZSchemaValidatorFactory.prototype.getDefinition = function (schema, ref) {
