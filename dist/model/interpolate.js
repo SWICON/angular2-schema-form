@@ -128,12 +128,6 @@ export function interpolate(template, rootModel, parentModel) {
                     res = eval(res);
                 }
             }
-            else {
-                res = null;
-            }
-        }
-        else {
-            res = null;
         }
         return res;
     });

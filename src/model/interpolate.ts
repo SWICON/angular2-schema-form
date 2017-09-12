@@ -112,11 +112,7 @@ export function interpolate(template, rootModel, parentModel) {
         if (ARITHMETIC_OP_MATCHER.test(res)) {
           res = eval(res);
         }
-      } else {
-        res = null;
       }
-    } else {
-      res = null;
     }
 
     return res;
