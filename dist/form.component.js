@@ -80,8 +80,8 @@ var FormComponent = (function () {
         var isDirty = false;
         if (this.rootProperty instanceof PropertyGroup) {
             this.rootProperty.forEachChildRecursive(function (field) {
-                if (!isDirty) {
-                    isDirty = field.control && (field.control.touched || field.control.dirty);
+                if (!isDirty && field.control) {
+                    isDirty = field.control.touched || field.control.dirty;
                     if (isUndefined(isDirty)) {
                         var p = 23432;
                     }
