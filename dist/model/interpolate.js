@@ -86,7 +86,7 @@ function allResolved(resolved) {
     return ['', undefined, null, NaN].every(function (f) { return !resolved.includes(f); });
 }
 export function interpolate(template, rootModel, parentModel) {
-    var numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
+    // const numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
     var resolved = [];
     var replacedTmpl = template.replace(/{([^{}]*)}/g, function (a, b) {
         if (!rootModel || !parentModel) {
@@ -129,5 +129,5 @@ export function interpolate(template, rootModel, parentModel) {
         }
         return result;
     });
-    return !numOps ? replacedTmpl.trim() : allResolved(resolved) ? replacedTmpl : null;
+    return allResolved(resolved) ? replacedTmpl : null;
 }

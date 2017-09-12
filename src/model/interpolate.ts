@@ -62,7 +62,7 @@ function allResolved(resolved) {
 }
 
 export function interpolate(template, rootModel, parentModel) {
-  const numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
+  // const numOps = ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template);
   const resolved = [];
 
   const replacedTmpl = template.replace(/{([^{}]*)}/g, function (a, b) {
@@ -116,5 +116,5 @@ export function interpolate(template, rootModel, parentModel) {
     return result;
   });
 
-  return !numOps ? replacedTmpl.trim() : allResolved(resolved) ? replacedTmpl : null;
+  return allResolved(resolved) ? replacedTmpl : null;
 }
