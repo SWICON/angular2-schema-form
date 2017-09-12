@@ -121,4 +121,6 @@ export function interpolate(template, rootModel, parentModel) {
 
     return res;
   });
+
+  return result;
 }
