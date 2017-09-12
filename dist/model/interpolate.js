@@ -108,8 +108,8 @@ export function interpolate(template, rootModel, parentModel) {
             } while (match = VARIABLE_MATCHER.exec(res));
             res = temp;
         }
-        if (ARITHMETIC_OP_MATCHER.test(result) || AGGREGATE_FUNC_MATCHER.test(result)) {
-            if (!VARIABLE_MATCHER.test(result)) {
+        if (ARITHMETIC_OP_MATCHER.test(res) || AGGREGATE_FUNC_MATCHER.test(res)) {
+            if (!VARIABLE_MATCHER.test(res)) {
                 // eval aggregate functions
                 if (match = AGGREGATE_FUNC_MATCHER.exec(res)) {
                     temp = res;
@@ -118,7 +118,7 @@ export function interpolate(template, rootModel, parentModel) {
                         var params = match[2].split(',').map(function (i) { return i.trim(); });
                         temp = temp.replace(match[0], utils[func].apply(utils, params));
                     } while (match = AGGREGATE_FUNC_MATCHER.exec(res));
-                    result = temp;
+                    res = temp;
                 }
                 // execute arithmetic operators if any
                 if (ARITHMETIC_OP_MATCHER.test(res)) {
