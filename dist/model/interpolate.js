@@ -114,7 +114,7 @@ export function interpolate(template, rootModel, parentModel) {
             result = temp;
         }
         // eval aggregate functions
-        if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
+        if (allResolved(resolved) && (match = AGGREGATE_FUNC_MATCHER.exec(result))) {
             temp = result;
             do {
                 var func = match[1];
@@ -124,7 +124,7 @@ export function interpolate(template, rootModel, parentModel) {
             result = temp;
         }
         // execute arithmetic operators if any
-        if (ARITHMETIC_OP_MATCHER.test(result)) {
+        if (allResolved(resolved) && ARITHMETIC_OP_MATCHER.test(result)) {
             result = eval(result);
         }
         return result;
