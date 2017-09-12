@@ -57,6 +57,10 @@ const utils = {
   }
 };
 
+function allResolved(resolved) {
+  return ['', undefined, null, NaN].every(f => !resolved.includes(f));
+}
+
 export function interpolate(template, rootModel, parentModel) {
   if (!rootModel || !parentModel) {
     return;
@@ -65,6 +69,7 @@ export function interpolate(template, rootModel, parentModel) {
   let result = template.replace(/{([^{}]*)}/g, function (a, b) {
     let res = b,
       temp = res,
+      resolved = [],
       match;
 
     // replace variables if any
@@ -73,10 +78,10 @@ export function interpolate(template, rootModel, parentModel) {
         const str = match[0];
         let toReplace = undefined;
         if (str.startsWith('$$')) {
-          // resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
+          resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
           toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''))
         } else if (str.startsWith('$')) {
-          // resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
+          resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
           toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
         }
         if (['', undefined, null, NaN].includes(toReplace)) {
@@ -89,7 +94,7 @@ export function interpolate(template, rootModel, parentModel) {
     }
 
     if (ARITHMETIC_OP_MATCHER.test(res) || AGGREGATE_FUNC_MATCHER.test(res)) {
-      if (!VARIABLE_MATCHER.test(res)) {
+      if (allResolved(resolved)) {
         // eval aggregate functions
         if (match = AGGREGATE_FUNC_MATCHER.exec(res)) {
           temp = res;
