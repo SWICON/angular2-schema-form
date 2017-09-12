@@ -125,7 +125,7 @@ function replaceVariables(template, rootModel, parentModel) {
                     toReplace = '';
                 }
                 if (isObject(toReplace)) {
-                    return toReplace;
+                    return JSON.stringify(toReplace);
                 }
                 else {
                     temp = temp.replace(str, toReplace);
@@ -173,6 +173,12 @@ export function interpolate(template, rootModel, parentModel) {
     }
     else {
         // there are no math functions, template has text result
-        return replaceVariables(template, rootModel, parentModel).trim();
+        var result = replaceVariables(template, rootModel, parentModel).trim();
+        try {
+            return JSON.parse(result);
+        }
+        catch (err) {
+            return result;
+        }
     }
 }
