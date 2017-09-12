@@ -21,6 +21,7 @@ import {SchemaValidatorFactory, ZSchemaValidatorFactory} from './schemavalidator
 import {WidgetFactory} from './widgetfactory';
 import {TerminatorService} from './terminator.service';
 import {PropertyGroup} from './model/formproperty';
+import {isNullOrUndefined, isUndefined} from 'util';
 
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
   return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
@@ -137,6 +138,10 @@ export class FormComponent implements OnChanges {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
         if (!isDirty) {
           isDirty = field.control && (field.control.touched || field.control.dirty);
+
+          if (isUndefined(isDirty)) {
+            const p = 23432;
+          }
         }
       })
     }

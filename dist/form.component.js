@@ -4,6 +4,7 @@ import { SchemaValidatorFactory } from './schemavalidatorfactory';
 import { WidgetFactory } from './widgetfactory';
 import { TerminatorService } from './terminator.service';
 import { PropertyGroup } from './model/formproperty';
+import { isUndefined } from 'util';
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
     return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
 }
@@ -81,6 +82,9 @@ var FormComponent = (function () {
             this.rootProperty.forEachChildRecursive(function (field) {
                 if (!isDirty) {
                     isDirty = field.control && (field.control.touched || field.control.dirty);
+                    if (isUndefined(isDirty)) {
+                        var p = 23432;
+                    }
                 }
             });
         }
