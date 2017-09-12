@@ -45,6 +45,7 @@ export class ArrayLayoutWidget extends Widget<ArrayProperty> implements AfterVie
     });
     this.formProperty.valueChanges.subscribe((newValue) => {
       control.setValue(newValue);
+      control.markAsDirty();
     });
   }
 }
@@ -59,6 +60,7 @@ export class ObjectLayoutWidget extends Widget<ObjectProperty> implements AfterV
     });
     this.formProperty.valueChanges.subscribe((newValue) => {
       control.setValue(newValue);
+      control.markAsDirty();
     });
   }
 }

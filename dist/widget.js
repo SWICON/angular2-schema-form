@@ -57,6 +57,7 @@ var ArrayLayoutWidget = (function (_super) {
         });
         this.formProperty.valueChanges.subscribe(function (newValue) {
             control.setValue(newValue);
+            control.markAsDirty();
         });
     };
     return ArrayLayoutWidget;
@@ -75,6 +76,7 @@ var ObjectLayoutWidget = (function (_super) {
         });
         this.formProperty.valueChanges.subscribe(function (newValue) {
             control.setValue(newValue);
+            control.markAsDirty();
         });
     };
     return ObjectLayoutWidget;
