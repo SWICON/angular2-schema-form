@@ -82,6 +82,9 @@ var utils = {
         });
     }
 };
+function isObject(elem) {
+    return typeof elem === 'object';
+}
 function resetRegex(regex) {
     regex.lastIndex = 0;
 }
@@ -121,7 +124,12 @@ function replaceVariables(template, rootModel, parentModel) {
                 if (['', undefined, null, NaN].includes(toReplace)) {
                     toReplace = '';
                 }
-                temp = temp.replace(str, toReplace);
+                if (isObject(toReplace)) {
+                    return toReplace;
+                }
+                else {
+                    temp = temp.replace(str, toReplace);
+                }
             } while (match = VARIABLE_MATCHER.exec(res));
             res = temp;
         }
