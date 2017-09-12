@@ -108,12 +108,8 @@ export function interpolate(template, rootModel, parentModel) {
             } while (match = VARIABLE_MATCHER.exec(res));
             res = temp;
         }
-        return res;
-    });
-    if (ARITHMETIC_OP_MATCHER.test(result) || AGGREGATE_FUNC_MATCHER.test(result)) {
-        if (!VARIABLE_MATCHER.test(result)) {
-            return result.replace(/{([^{}]*)}/g, function (a, b) {
-                var res = b, temp = res, match;
+        if (ARITHMETIC_OP_MATCHER.test(result) || AGGREGATE_FUNC_MATCHER.test(result)) {
+            if (!VARIABLE_MATCHER.test(result)) {
                 // eval aggregate functions
                 if (match = AGGREGATE_FUNC_MATCHER.exec(res)) {
                     temp = res;
@@ -128,66 +124,14 @@ export function interpolate(template, rootModel, parentModel) {
                 if (ARITHMETIC_OP_MATCHER.test(res)) {
                     res = eval(res);
                 }
-                return res;
-            });
+            }
+            else {
+                res = null;
+            }
         }
         else {
-            return null;
+            res = null;
         }
-    }
-    else {
-        return result;
-    }
-    // let replacedTmpl = template.replace(/{([^{}]*)}/g, function (a, b) {
-    //   let result = b,
-    //     temp = result,
-    //     match;
-    //
-    //   // replace variables if any
-    //   if (match = VARIABLE_MATCHER.exec(result)) {
-    //     do {
-    //       const str = match[0];
-    //       let toReplace = undefined;
-    //       if (str.startsWith('$$')) {
-    //         resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
-    //         toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''))
-    //       } else if (str.startsWith('$')) {
-    //         resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
-    //         toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
-    //       }
-    //       if (['', undefined, null, NaN].includes(toReplace)) {
-    //         toReplace = '';
-    //       }
-    //       temp = temp.replace(str, toReplace);
-    //     } while (match = VARIABLE_MATCHER.exec(result));
-    //
-    //     result = temp;
-    //   }
-    //
-    //   return result;
-    // });
-    //
-    // if (allResolved(resolved)) {
-    //   return replacedTmpl.replace(/{([^{}]*)}/g, function (a, b) {
-    //     // eval aggregate functions
-    //     if (match = AGGREGATE_FUNC_MATCHER.exec(result)) {
-    //       temp = result;
-    //
-    //       do {
-    //         const func = match[1];
-    //         const params = match[2].split(',').map(i => i.trim());
-    //         temp = temp.replace(match[0], utils[func](...params));
-    //       } while (match = AGGREGATE_FUNC_MATCHER.exec(result));
-    //
-    //       result = temp;
-    //     }
-    //
-    //     // execute arithmetic operators if any
-    //     if (ARITHMETIC_OP_MATCHER.test(result)) {
-    //       result = eval(result);
-    //     }
-    //   });
-    // } else {
-    //   return null;
-    // }
+        return res;
+    });
 }
