@@ -34,6 +34,9 @@ var FormProperty = (function () {
             this._root = this;
         }
         this._path = path;
+        if (this.schema.template) {
+            this.schema.readOnly = true;
+        }
     }
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
         get: function () {
@@ -80,6 +83,7 @@ var FormProperty = (function () {
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
             if (this.schema.template) {
+                this.schema.readOnly = true;
                 var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
                 if (this._value !== newValue) {
                     this._value = newValue;

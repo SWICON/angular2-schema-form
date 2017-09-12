@@ -39,6 +39,10 @@ export abstract class FormProperty {
       this._root = <PropertyGroup><any>this;
     }
     this._path = path;
+
+    if (this.schema.template) {
+      this.schema.readOnly = true;
+    }
   }
 
   public get valueChanges() {
@@ -67,6 +71,7 @@ export abstract class FormProperty {
 
   public get value() {
     if (this.schema.template) {
+      this.schema.readOnly = true;
       const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
       if (this._value !== newValue) {
         this._value = newValue;
