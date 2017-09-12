@@ -55,6 +55,9 @@ var ArrayLayoutWidget = (function (_super) {
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });
         });
+        this.formProperty.valueChanges.subscribe(function (newValue) {
+            control.setValue(newValue);
+        });
     };
     return ArrayLayoutWidget;
 }(Widget));
@@ -69,6 +72,9 @@ var ObjectLayoutWidget = (function (_super) {
         var control = this.control;
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });
+        });
+        this.formProperty.valueChanges.subscribe(function (newValue) {
+            control.setValue(newValue);
         });
     };
     return ObjectLayoutWidget;
