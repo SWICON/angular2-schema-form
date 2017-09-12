@@ -1,6 +1,6 @@
 var VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
-var ARITHMETIC_OP_MATCHER = /[()%+\-\/]|\*(?![^[]*])/g;
+var ARITHMETIC_OP_MATCHER = /[*\/%-+]/g;
 var utils = {
     resolveVariable: function resolveVariable(o, s) {
         s = s.replace(/\[(\*|\w+)]/g, '.$1');
@@ -82,26 +82,40 @@ var utils = {
         });
     }
 };
-function allResolved(resolved) {
-    return ['', undefined, null, NaN].every(function (f) { return !resolved.includes(f); });
+function resetRegex(regex) {
+    regex.lastIndex = 0;
 }
-export function interpolate(template, rootModel, parentModel) {
-    if (!rootModel || !parentModel) {
-        return;
+function canResolveVariables(template, rootModel, parentModel) {
+    var match, canResolve = true;
+    if (match = VARIABLE_MATCHER.exec(template)) {
+        do {
+            var str = match[0];
+            var toReplace = undefined;
+            if (str.startsWith('$$')) {
+                toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''));
+            }
+            else if (str.startsWith('$')) {
+                toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
+            }
+            if (toReplace === undefined) {
+                canResolve = false;
+            }
+        } while (match = VARIABLE_MATCHER.exec(template));
     }
-    var result = template.replace(/{([^{}]*)}/g, function (a, b) {
-        var res = b, temp = res, resolved = [], match;
+    return canResolve;
+}
+function replaceVariables(template, rootModel, parentModel) {
+    return template.replace(/{([^{}]*)}/g, function (a, b) {
+        var res = b, temp = res, match;
         // replace variables if any
         if (match = VARIABLE_MATCHER.exec(res)) {
             do {
                 var str = match[0];
                 var toReplace = undefined;
                 if (str.startsWith('$$')) {
-                    resolved.push(utils.resolveVariable(rootModel, str.replace('$$', '')));
                     toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''));
                 }
                 else if (str.startsWith('$')) {
-                    resolved.push(utils.resolveVariable(parentModel, str.replace('$', '')));
                     toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
                 }
                 if (['', undefined, null, NaN].includes(toReplace)) {
@@ -111,25 +125,46 @@ export function interpolate(template, rootModel, parentModel) {
             } while (match = VARIABLE_MATCHER.exec(res));
             res = temp;
         }
-        if (ARITHMETIC_OP_MATCHER.test(res) || AGGREGATE_FUNC_MATCHER.test(res)) {
-            if (allResolved(resolved)) {
-                // eval aggregate functions
-                if (match = AGGREGATE_FUNC_MATCHER.exec(res)) {
-                    temp = res;
-                    do {
-                        var func = match[1];
-                        var params = match[2].split(',').map(function (i) { return i.trim(); });
-                        temp = temp.replace(match[0], utils[func].apply(utils, params));
-                    } while (match = AGGREGATE_FUNC_MATCHER.exec(res));
-                    res = temp;
-                }
-                // execute arithmetic operators if any
-                if (ARITHMETIC_OP_MATCHER.test(res)) {
-                    res = eval(res);
-                }
-            }
-        }
         return res;
     });
-    return result;
+}
+function solveMathFunctions(template) {
+    if (AGGREGATE_FUNC_MATCHER.test(template)) {
+        resetRegex(AGGREGATE_FUNC_MATCHER);
+        var match = void 0, temp = template;
+        // eval aggregate functions
+        if (match = AGGREGATE_FUNC_MATCHER.exec(temp)) {
+            do {
+                var func = match[1];
+                var params = match[2].split(',').map(function (i) { return i.trim(); });
+                temp = temp.replace(match[0], utils[func].apply(utils, params));
+            } while (match = AGGREGATE_FUNC_MATCHER.exec(temp));
+            template = temp;
+        }
+    }
+    if (ARITHMETIC_OP_MATCHER.test(template)) {
+        template = eval(template);
+    }
+    return template;
+}
+export function interpolate(template, rootModel, parentModel) {
+    if (!rootModel || !parentModel) {
+        return null;
+    }
+    // if template has arithmetic or aggregate function we return the
+    // result only if all variable could resolved
+    if (ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template)) {
+        resetRegex(ARITHMETIC_OP_MATCHER);
+        resetRegex(AGGREGATE_FUNC_MATCHER);
+        if (!canResolveVariables(template, rootModel, parentModel)) {
+            return null;
+        }
+        else {
+            return solveMathFunctions(replaceVariables(template, rootModel, parentModel));
+        }
+    }
+    else {
+        // there are no math functions, template has text result
+        return replaceVariables(template, rootModel, parentModel).trim();
+    }
 }
