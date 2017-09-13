@@ -106,7 +106,7 @@ function replaceVariables(template, rootModel, parentModel) {
           toReplace = '';
         }
         if (isObject(toReplace)) {
-          return JSON.stringify(toReplace);
+          temp = temp.replace(str, JSON.stringify(toReplace));
         } else {
           temp = temp.replace(str, toReplace);
         }
