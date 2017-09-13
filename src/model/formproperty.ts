@@ -42,12 +42,14 @@ export abstract class FormProperty {
 
     if (this.schema.template) {
       this.schema.readOnly = true;
-      this.root.valueChanges.subscribe(() => {
-        const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-        if (this._value !== newValue) {
-          this.setValue(newValue, false);
-        }
-      });
+      this.setTemplateValue();
+    }
+  }
+
+  private setTemplateValue() {
+    const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
+    if (this.value !== newValue) {
+      this.setValue(newValue, false);
     }
   }
 
@@ -76,6 +78,7 @@ export abstract class FormProperty {
   }
 
   public get value() {
+    this.setTemplateValue();
     return this._value;
   }
 
