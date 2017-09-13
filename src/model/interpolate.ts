@@ -133,7 +133,12 @@ function solveMathFunctions(template) {
     if (match = AGGREGATE_FUNC_MATCHER.exec(temp)) {
       do {
         const func = match[1];
-        const params = match[2].split(',').map(i => i.trim());
+        let params = match[2];
+        try {
+          params = JSON.parse(params);
+        } catch (err) {
+          params = params.split(',').map(i => i.trim());
+        }
         temp = temp.replace(match[0], utils[func](...params));
       } while (match = AGGREGATE_FUNC_MATCHER.exec(temp));
 

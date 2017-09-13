@@ -148,7 +148,13 @@ function solveMathFunctions(template) {
         if (match = AGGREGATE_FUNC_MATCHER.exec(temp)) {
             do {
                 var func = match[1];
-                var params = match[2].split(',').map(function (i) { return i.trim(); });
+                var params = match[2];
+                try {
+                    params = JSON.parse(params);
+                }
+                catch (err) {
+                    params = params.split(',').map(function (i) { return i.trim(); });
+                }
                 temp = temp.replace(match[0], utils[func].apply(utils, params));
             } while (match = AGGREGATE_FUNC_MATCHER.exec(temp));
             template = temp;
