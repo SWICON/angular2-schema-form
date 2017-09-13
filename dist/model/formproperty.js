@@ -89,7 +89,7 @@ var FormProperty = (function () {
     });
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
-            this.setTemplateValue();
+            // this.setTemplateValue();
             return this._value;
         },
         enumerable: true,

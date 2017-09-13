@@ -78,7 +78,7 @@ export abstract class FormProperty {
   }
 
   public get value() {
-    this.setTemplateValue();
+    // this.setTemplateValue();
     return this._value;
   }
 
