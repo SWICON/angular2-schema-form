@@ -17,7 +17,7 @@ var AtomicProperty = (function (_super) {
     AtomicProperty.prototype.setValue = function (value, onlySelf) {
         if (onlySelf === void 0) { onlySelf = false; }
         if (value instanceof Date) {
-            var p = 23423;
+            value = value.toISOString();
         }
         this._value = value;
         this.updateValueAndValidity(onlySelf, true);
