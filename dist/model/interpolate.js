@@ -1,6 +1,6 @@
 var VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
-var ARITHMETIC_OP_MATCHER = /[*\/%-+]/g;
+var ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 var utils = {
     resolveVariable: function resolveVariable(o, s) {
         s = s.replace(/\[(\*|\w+)]/g, '.$1');
@@ -125,12 +125,13 @@ function replaceVariables(template, rootModel, parentModel) {
                 if (['', undefined, null, NaN].includes(toReplace)) {
                     toReplace = '';
                 }
-                // if (isObject(toReplace)) {
-                //   temp = temp.replace(str, JSON.stringify(toReplace));
-                // } else {
-                //   temp = temp.replace(str, toReplace);
-                // }
-                temp = temp.replace(str, toReplace);
+                if (isObject(toReplace)) {
+                    temp = temp.replace(str, JSON.stringify(toReplace));
+                }
+                else {
+                    temp = temp.replace(str, toReplace);
+                }
+                // temp = temp.replace(str, toReplace);
             } while (match = VARIABLE_MATCHER.exec(res));
             res = temp;
         }

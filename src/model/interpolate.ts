@@ -1,6 +1,6 @@
 const VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 const AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
-const ARITHMETIC_OP_MATCHER = /[*\/%-+]/g;
+const ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 
 const utils = {
   resolveVariable: function resolveVariable(o, s) {
@@ -107,12 +107,12 @@ function replaceVariables(template, rootModel, parentModel) {
         if (['', undefined, null, NaN].includes(toReplace)) {
           toReplace = '';
         }
-        // if (isObject(toReplace)) {
-        //   temp = temp.replace(str, JSON.stringify(toReplace));
-        // } else {
-        //   temp = temp.replace(str, toReplace);
-        // }
-        temp = temp.replace(str, toReplace);
+        if (isObject(toReplace)) {
+          temp = temp.replace(str, JSON.stringify(toReplace));
+        } else {
+          temp = temp.replace(str, toReplace);
+        }
+        // temp = temp.replace(str, toReplace);
       } while (match = VARIABLE_MATCHER.exec(res));
 
       res = temp;
