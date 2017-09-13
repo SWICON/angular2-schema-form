@@ -17,6 +17,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { interpolate } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
+        var _this = this;
         this.validatorRegistry = validatorRegistry;
         this.schema = schema;
         this._value = null;
@@ -36,6 +37,12 @@ var FormProperty = (function () {
         this._path = path;
         if (this.schema.template) {
             this.schema.readOnly = true;
+            this.root.valueChanges.subscribe(function () {
+                var newValue = interpolate(_this.schema.template, _this.root.value, _this.parent.value);
+                if (_this._value !== newValue) {
+                    _this.setValue(newValue, true);
+                }
+            });
         }
     }
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
@@ -82,13 +89,6 @@ var FormProperty = (function () {
     });
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
-            if (this.schema.template) {
-                this.schema.readOnly = true;
-                var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-                if (this._value !== newValue) {
-                    this._value = newValue;
-                }
-            }
             return this._value;
         },
         enumerable: true,
