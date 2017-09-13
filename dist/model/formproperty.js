@@ -42,7 +42,7 @@ var FormProperty = (function () {
     FormProperty.prototype.setTemplateValue = function () {
         var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
         if (this._value !== newValue) {
-            this.setValue(newValue, false);
+            this.setValue(newValue, true);
         }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
@@ -89,7 +89,7 @@ var FormProperty = (function () {
     });
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
-            // this.setTemplateValue();
+            this.setTemplateValue();
             return this._value;
         },
         enumerable: true,

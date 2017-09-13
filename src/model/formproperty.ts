@@ -49,7 +49,7 @@ export abstract class FormProperty {
   private setTemplateValue() {
     const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
     if (this._value !== newValue) {
-      this.setValue(newValue, false);
+      this.setValue(newValue, true);
     }
   }
 
@@ -78,7 +78,7 @@ export abstract class FormProperty {
   }
 
   public get value() {
-    // this.setTemplateValue();
+    this.setTemplateValue();
     return this._value;
   }
 
