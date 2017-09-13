@@ -1,5 +1,6 @@
 var VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
+var ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
 var ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 var utils = {
     resolveVariable: function resolveVariable(o, s) {
@@ -171,8 +172,8 @@ export function interpolate(template, rootModel, parentModel) {
     }
     // if template has arithmetic or aggregate function we return the
     // result only if all variable could resolved
-    if (ARITHMETIC_OP_MATCHER.test(template) || AGGREGATE_FUNC_MATCHER.test(template)) {
-        resetRegex(ARITHMETIC_OP_MATCHER);
+    if (ARITHMETIC_OP_MATCHER2.test(template) || AGGREGATE_FUNC_MATCHER.test(template)) {
+        resetRegex(ARITHMETIC_OP_MATCHER2);
         resetRegex(AGGREGATE_FUNC_MATCHER);
         if (!canResolveVariables(template, rootModel, parentModel)) {
             return null;
