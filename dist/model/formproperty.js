@@ -41,7 +41,7 @@ var FormProperty = (function () {
     }
     FormProperty.prototype.setTemplateValue = function () {
         var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-        if (this.value !== newValue) {
+        if (this._value !== newValue) {
             this.setValue(newValue, false);
         }
     };
