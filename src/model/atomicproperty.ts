@@ -3,6 +3,9 @@ import {FormProperty} from './formproperty';
 export abstract class AtomicProperty extends FormProperty {
 
   setValue(value, onlySelf = false) {
+    if (value instanceof Date) {
+      const p = 23423;
+    }
     this._value = value;
     this.updateValueAndValidity(onlySelf, true);
   }

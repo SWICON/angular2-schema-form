@@ -5,6 +5,10 @@ import { HttpModule } from '@angular/http';
 
 import { SchemaFormModule } from './lib';
 import { AppComponent } from './app.component';
+import {SchemaValidatorFactory} from './lib/schemavalidatorfactory';
+import {ZSchemaValidatorFactory} from './lib/schemavalidatorfactory';
+import {WidgetRegistry} from './lib/widgetregistry';
+import {DefaultWidgetRegistry} from './lib/defaultwidgets/defaultwidgetregistry';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,16 @@ import { AppComponent } from './app.component';
     SchemaFormModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: SchemaValidatorFactory,
+      useClass: ZSchemaValidatorFactory
+    },
+    {
+      provide: WidgetRegistry,
+      useClass: DefaultWidgetRegistry
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
