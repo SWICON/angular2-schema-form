@@ -108,6 +108,7 @@ function canResolveVariables(template, rootModel, parentModel) {
     return canResolve;
 }
 function replaceVariables(template, rootModel, parentModel) {
+    resetRegex(VARIABLE_MATCHER);
     return template.replace(/{([^{}]*)}/g, function (a, b) {
         var res = b, temp = res, match;
         // replace variables if any
@@ -137,6 +138,8 @@ function replaceVariables(template, rootModel, parentModel) {
     });
 }
 function solveMathFunctions(template) {
+    resetRegex(ARITHMETIC_OP_MATCHER);
+    resetRegex(AGGREGATE_FUNC_MATCHER);
     if (AGGREGATE_FUNC_MATCHER.test(template)) {
         resetRegex(AGGREGATE_FUNC_MATCHER);
         var match = void 0, temp = template;
