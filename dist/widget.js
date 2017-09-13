@@ -55,10 +55,10 @@ var ArrayLayoutWidget = (function (_super) {
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });
         });
-        this.formProperty.valueChanges.subscribe(function (newValue) {
-            control.setValue(newValue);
-            control.markAsDirty();
-        });
+        // this.formProperty.valueChanges.subscribe((newValue) => {
+        //   control.setValue(newValue);
+        //   control.markAsDirty();
+        // });
     };
     return ArrayLayoutWidget;
 }(Widget));
@@ -74,10 +74,10 @@ var ObjectLayoutWidget = (function (_super) {
         this.formProperty.errorsChanges.subscribe(function (errors) {
             control.setErrors(errors, { emitEvent: true });
         });
-        this.formProperty.valueChanges.subscribe(function (newValue) {
-            control.setValue(newValue);
-            control.markAsDirty();
-        });
+        // this.formProperty.valueChanges.subscribe((newValue) => {
+        //   control.setValue(newValue);
+        //   control.markAsDirty();
+        // });
     };
     return ObjectLayoutWidget;
 }(Widget));

@@ -37,8 +37,7 @@ var ArrayProperty = (function (_super) {
         this.updateValueAndValidity(onlySelf, true);
     };
     ArrayProperty.prototype._hasValue = function () {
-        // return this.value && this.value.length;
-        return true;
+        return this.value && this.value.length;
     };
     ArrayProperty.prototype._updateValue = function () {
         this.reduceValue();
@@ -46,7 +45,7 @@ var ArrayProperty = (function (_super) {
     ArrayProperty.prototype.reduceValue = function () {
         var value = [];
         this.forEachChild(function (property, _) {
-            if (property.visible) {
+            if (property.visible && property._hasValue()) {
                 value.push(property.value);
             }
         });
