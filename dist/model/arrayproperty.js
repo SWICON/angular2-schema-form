@@ -37,7 +37,8 @@ var ArrayProperty = (function (_super) {
         this.updateValueAndValidity(onlySelf, true);
     };
     ArrayProperty.prototype._hasValue = function () {
-        return this.value && this.value.length;
+        // return this.value && this.value.length;
+        return true;
     };
     ArrayProperty.prototype._updateValue = function () {
         this.reduceValue();
