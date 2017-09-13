@@ -172,7 +172,7 @@ export function interpolate(template, rootModel, parentModel) {
     }
     // if template has arithmetic or aggregate function we return the
     // result only if all variable could resolved
-    if (ARITHMETIC_OP_MATCHER2.test(template) || AGGREGATE_FUNC_MATCHER.test(template)) {
+    if (!ARITHMETIC_OP_MATCHER2.test(template) || AGGREGATE_FUNC_MATCHER.test(template)) {
         resetRegex(ARITHMETIC_OP_MATCHER2);
         resetRegex(AGGREGATE_FUNC_MATCHER);
         if (!canResolveVariables(template, rootModel, parentModel)) {
