@@ -40,9 +40,11 @@ var FormProperty = (function () {
         }
     }
     FormProperty.prototype.setTemplateValue = function () {
-        var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-        if (this._value !== newValue) {
-            this._value = newValue;
+        if (this.schema.template) {
+            var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
+            if (this._value !== newValue) {
+                this._value = newValue;
+            }
         }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
