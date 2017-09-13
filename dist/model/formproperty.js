@@ -40,7 +40,7 @@ var FormProperty = (function () {
             this.root.valueChanges.subscribe(function () {
                 var newValue = interpolate(_this.schema.template, _this.root.value, _this.parent.value);
                 if (_this._value !== newValue) {
-                    _this.setValue(newValue, true);
+                    _this.setValue(newValue, false);
                 }
             });
         }

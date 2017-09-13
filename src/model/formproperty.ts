@@ -45,7 +45,7 @@ export abstract class FormProperty {
       this.root.valueChanges.subscribe(() => {
         const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
         if (this._value !== newValue) {
-          this.setValue(newValue, true);
+          this.setValue(newValue, false);
         }
       });
     }
