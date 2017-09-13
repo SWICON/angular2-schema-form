@@ -46,7 +46,7 @@ var ArrayProperty = (function (_super) {
     ArrayProperty.prototype.reduceValue = function () {
         var value = [];
         this.forEachChild(function (property, _) {
-            if (property.visible && property._hasValue()) {
+            if (property.visible) {
                 value.push(property.value);
             }
         });

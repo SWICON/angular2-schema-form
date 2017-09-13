@@ -49,7 +49,7 @@ export class ArrayProperty extends PropertyGroup {
   private reduceValue(): void {
     const value = [];
     this.forEachChild((property, _) => {
-      if (property.visible && property._hasValue()) {
+      if (property.visible) {
         value.push(property.value);
       }
     });
