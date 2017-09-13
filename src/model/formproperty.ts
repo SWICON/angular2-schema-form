@@ -42,7 +42,7 @@ export abstract class FormProperty {
 
     if (this.schema.template) {
       this.schema.readOnly = true;
-      this.setTemplateValue();
+      this.root.valueChanges.subscribe(() => this.setTemplateValue());
     }
   }
 
@@ -80,7 +80,6 @@ export abstract class FormProperty {
   }
 
   public get value() {
-    this.setTemplateValue();
     return this._value;
   }
 
