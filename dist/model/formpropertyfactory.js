@@ -37,7 +37,28 @@ var FormPropertyFactory = (function () {
             if (schema.widget && schema.widget.id) {
                 refSchema.widget = schema.widget;
             }
-            newProperty = this.createProperty(refSchema, parent, path);
+            // newProperty = this.createProperty(refSchema, parent, path);
+            switch (refSchema.type) {
+                case 'integer':
+                case 'number':
+                    newProperty = new NumberProperty(this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
+                    break;
+                case 'string':
+                    newProperty = new StringProperty(this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
+                    break;
+                case 'boolean':
+                    newProperty = new BooleanProperty(this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
+                    break;
+                case 'object':
+                    console.log("create object: " + path + " -  " + new Date().toISOString());
+                    newProperty = new ObjectProperty(this, this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
+                    break;
+                case 'array':
+                    newProperty = new ArrayProperty(this, this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
+                    break;
+                default:
+                    throw new TypeError("Undefined type " + refSchema.type);
+            }
         }
         else {
             switch (schema.type) {
