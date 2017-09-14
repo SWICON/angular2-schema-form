@@ -80,7 +80,9 @@ var FormProperty = (function () {
         if (this.schema.template) {
             setTimeout(function () {
                 var newValue = interpolate(_this.schema.template, _this.root.value, _this.parent.value);
-                _this.setValue(newValue, false);
+                if (!isNaN(newValue) && newValue !== undefined) {
+                    _this.setValue(newValue, false);
+                }
             });
             // if (newValue && !isEqual(this._value, newValue)) {
             //   this.setValue(newValue, false);
