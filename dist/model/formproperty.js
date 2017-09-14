@@ -14,6 +14,7 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
+import isEqual from 'lodash.isequal';
 import { interpolate, resolveValue } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
@@ -47,10 +48,10 @@ var FormProperty = (function () {
     FormProperty.prototype.setTemplateValue = function () {
         if (this.schema.template) {
             var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-            if (newValue && this._value !== newValue) {
+            if (newValue && !isEqual(this._value, newValue)) {
                 this.setValue(newValue, false);
             }
-            else if (this._value !== newValue) {
+            else if (!isEqual(this._value, newValue)) {
                 this.setValue(newValue, true);
             }
         }
@@ -58,10 +59,10 @@ var FormProperty = (function () {
     FormProperty.prototype.setCopiedValue = function () {
         if (this.schema.value) {
             var newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-            if (newValue && this._value !== newValue) {
+            if (newValue && !isEqual(this._value, newValue)) {
                 this.setValue(newValue, false);
             }
-            else if (this._value !== newValue) {
+            else if (!isEqual(this._value, newValue)) {
                 this.setValue(newValue, true);
             }
         }
