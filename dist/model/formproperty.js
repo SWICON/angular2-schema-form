@@ -15,7 +15,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
 import isEqual from 'lodash.isequal';
-import { interpolate, resolveValue } from './interpolate';
+import { interpolate } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
         var _this = this;
@@ -41,10 +41,25 @@ var FormProperty = (function () {
             this.root.valueChanges.subscribe(function () { return _this.setTemplateValue(); });
         }
         if (this.schema.value) {
-            this.schema.readOnly = true;
-            this.root.valueChanges.subscribe(function () { return _this.setCopiedValue(); });
+            // this.schema.readOnly = true;
+            // this.root.valueChanges.subscribe(() => this.setCopiedValue());
+            this.subscribeToChangeOf(this.schema.value, this.setCopiedValue);
+            // const props = getProperties(this.schema.value);
+            // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
         }
     }
+    FormProperty.prototype.subscribeToChangeOf = function (propertyId, callback) {
+        var found;
+        if (propertyId.startsWith('$$')) {
+            found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
+        }
+        else if (propertyId.startsWith('$')) {
+            found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
+        }
+        if (found) {
+            found.valueChanges.subscribe(function (value) { return callback(value); });
+        }
+    };
     FormProperty.prototype.setTemplateValue = function () {
         if (this.schema.template) {
             var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
@@ -56,16 +71,16 @@ var FormProperty = (function () {
             }
         }
     };
-    FormProperty.prototype.setCopiedValue = function () {
-        if (this.schema.value) {
-            var newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-            if (newValue && !isEqual(this._value, newValue)) {
-                this.setValue(newValue, false);
-            }
-            else if (!isEqual(this._value, newValue)) {
-                this.setValue(newValue, true);
-            }
-        }
+    FormProperty.prototype.setCopiedValue = function (newValue) {
+        this.setValue(newValue, false);
+        // if (this.schema.value) {
+        //   const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
+        //   if (newValue && !isEqual(this._value, newValue)) {
+        //     this.setValue(newValue, false);
+        //   } else if (!isEqual(this._value, newValue)) {
+        //     this.setValue(newValue, true);
+        //   }
+        // }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
         get: function () {

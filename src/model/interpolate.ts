@@ -163,6 +163,16 @@ function hasMathFunctions(template) {
   return hasMath;
 }
 
+export function getProperties(template) {
+  resetRegex(TOKEN_MATCHER);
+  const props = [];
+  let match;
+  while (match = TOKEN_MATCHER.exec(template)) {
+    props.push(match[1]);
+  }
+  return props;
+}
+
 export function resolveValue(path, rootModel, parentModel) {
   if (path.startsWith('$$')) {
     return utils.resolveVariable(rootModel, path.replace('$$', ''))

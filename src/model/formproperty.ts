@@ -10,7 +10,7 @@ import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
 import {Validator} from './validator';
 import {FormControl} from '@angular/forms';
-import {interpolate, resolveValue} from './interpolate';
+import {getProperties, interpolate, resolveValue} from './interpolate';
 
 export abstract class FormProperty {
   public schemaValidator: Function;
@@ -47,8 +47,23 @@ export abstract class FormProperty {
     }
 
     if (this.schema.value) {
-      this.schema.readOnly = true;
-      this.root.valueChanges.subscribe(() => this.setCopiedValue());
+      // this.schema.readOnly = true;
+      // this.root.valueChanges.subscribe(() => this.setCopiedValue());
+      this.subscribeToChangeOf(this.schema.value, this.setCopiedValue);
+      // const props = getProperties(this.schema.value);
+      // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
+    }
+  }
+
+  private subscribeToChangeOf(propertyId, callback) {
+    let found;
+    if (propertyId.startsWith('$$')) {
+      found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
+    } else if (propertyId.startsWith('$')) {
+      found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
+    }
+    if (found) {
+      found.valueChanges.subscribe(value => callback(value));
     }
   }
 
@@ -63,15 +78,16 @@ export abstract class FormProperty {
     }
   }
 
-  private setCopiedValue() {
-    if (this.schema.value) {
-      const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-      if (newValue && !isEqual(this._value, newValue)) {
-        this.setValue(newValue, false);
-      } else if (!isEqual(this._value, newValue)) {
-        this.setValue(newValue, true);
-      }
-    }
+  private setCopiedValue(newValue) {
+    this.setValue(newValue, false);
+    // if (this.schema.value) {
+    //   const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
+    //   if (newValue && !isEqual(this._value, newValue)) {
+    //     this.setValue(newValue, false);
+    //   } else if (!isEqual(this._value, newValue)) {
+    //     this.setValue(newValue, true);
+    //   }
+    // }
   }
 
   public get valueChanges() {
