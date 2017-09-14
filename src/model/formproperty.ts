@@ -86,11 +86,12 @@ export abstract class FormProperty {
   private setTemplateValue() {
     if (this.schema.template) {
       const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-      if (newValue && !isEqual(this._value, newValue)) {
-        this.setValue(newValue, false);
-      } else if (!isEqual(this._value, newValue)) {
-        this.setValue(newValue, true);
-      }
+      this.setValue(newValue, false);
+      // if (newValue && !isEqual(this._value, newValue)) {
+      //   this.setValue(newValue, false);
+      // } else if (!isEqual(this._value, newValue)) {
+      //   this.setValue(newValue, true);
+      // }
     }
   }
 
