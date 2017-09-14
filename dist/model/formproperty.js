@@ -18,7 +18,6 @@ import isEqual from 'lodash.isequal';
 import { interpolate } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
-        var _this = this;
         this.validatorRegistry = validatorRegistry;
         this.schema = schema;
         this._value = null;
@@ -36,22 +35,23 @@ var FormProperty = (function () {
             this._root = this;
         }
         this._path = path;
-        if (this.schema.template) {
-            this.schema.readOnly = true;
-            this.root.valueChanges.subscribe(function () { return _this.setTemplateValue(); });
-        }
-        if (this.schema.value) {
-            this.root.initialized.subscribe(function (initialized) {
-                if (initialized) {
-                    var sub = _this.subscribeToChangeOf(_this.schema.value);
-                    if (sub) {
-                        sub.subscribe(function (value) {
-                            _this.setCopiedValue(value);
-                        });
-                    }
-                }
-            });
-        }
+        // if (this.schema.template) {
+        //   this.schema.readOnly = true;
+        //   this.root.valueChanges.subscribe(() => this.setTemplateValue());
+        // }
+        //
+        // if (this.schema.value) {
+        //   (<ObjectProperty>this.root).initialized.subscribe(initialized => {
+        //     if (initialized) {
+        //       const sub = this.subscribeToChangeOf(this.schema.value);
+        //       if (sub) {
+        //         sub.subscribe(value => {
+        //           this.setCopiedValue(value);
+        //         });
+        //       }
+        //     }
+        //   });
+        // }
     }
     FormProperty.prototype.subscribeToChangeOf = function (propertyId) {
         var found;

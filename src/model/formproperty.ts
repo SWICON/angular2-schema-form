@@ -42,23 +42,23 @@ export abstract class FormProperty {
     }
     this._path = path;
 
-    if (this.schema.template) {
-      this.schema.readOnly = true;
-      this.root.valueChanges.subscribe(() => this.setTemplateValue());
-    }
-
-    if (this.schema.value) {
-      (<ObjectProperty>this.root).initialized.subscribe(initialized => {
-        if (initialized) {
-          const sub = this.subscribeToChangeOf(this.schema.value);
-          if (sub) {
-            sub.subscribe(value => {
-              this.setCopiedValue(value);
-            });
-          }
-        }
-      });
-    }
+    // if (this.schema.template) {
+    //   this.schema.readOnly = true;
+    //   this.root.valueChanges.subscribe(() => this.setTemplateValue());
+    // }
+    //
+    // if (this.schema.value) {
+    //   (<ObjectProperty>this.root).initialized.subscribe(initialized => {
+    //     if (initialized) {
+    //       const sub = this.subscribeToChangeOf(this.schema.value);
+    //       if (sub) {
+    //         sub.subscribe(value => {
+    //           this.setCopiedValue(value);
+    //         });
+    //       }
+    //     }
+    //   });
+    // }
   }
 
   private subscribeToChangeOf(propertyId) {
