@@ -44,11 +44,27 @@ export abstract class FormProperty {
       this.schema.readOnly = true;
       this.root.valueChanges.subscribe(() => this.setTemplateValue());
     }
+
+    if (this.schema.value) {
+      this.schema.readOnly = true;
+      this.root.valueChanges.subscribe(() => this.setCopiedValue());
+    }
   }
 
   private setTemplateValue() {
     if (this.schema.template) {
       const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
+      if (newValue && this._value !== newValue) {
+        this.setValue(newValue, false);
+      } else {
+        this.setValue(newValue, true);
+      }
+    }
+  }
+
+  private setCopiedValue() {
+    if (this.schema.value) {
+      const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
       if (newValue && this._value !== newValue) {
         this.setValue(newValue, false);
       } else {
@@ -82,11 +98,7 @@ export abstract class FormProperty {
   }
 
   public get value() {
-    if (this.schema.value) {
-      return resolveValue(this.schema.value, this.root.value, this.parent.value);
-    } else {
-      return this._value;
-    }
+    return this._value;
   }
 
   public get visible() {

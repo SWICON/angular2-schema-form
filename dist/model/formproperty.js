@@ -39,10 +39,25 @@ var FormProperty = (function () {
             this.schema.readOnly = true;
             this.root.valueChanges.subscribe(function () { return _this.setTemplateValue(); });
         }
+        if (this.schema.value) {
+            this.schema.readOnly = true;
+            this.root.valueChanges.subscribe(function () { return _this.setCopiedValue(); });
+        }
     }
     FormProperty.prototype.setTemplateValue = function () {
         if (this.schema.template) {
             var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
+            if (newValue && this._value !== newValue) {
+                this.setValue(newValue, false);
+            }
+            else {
+                this.setValue(newValue, true);
+            }
+        }
+    };
+    FormProperty.prototype.setCopiedValue = function () {
+        if (this.schema.value) {
+            var newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
             if (newValue && this._value !== newValue) {
                 this.setValue(newValue, false);
             }
@@ -95,12 +110,7 @@ var FormProperty = (function () {
     });
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
-            if (this.schema.value) {
-                return resolveValue(this.schema.value, this.root.value, this.parent.value);
-            }
-            else {
-                return this._value;
-            }
+            return this._value;
         },
         enumerable: true,
         configurable: true

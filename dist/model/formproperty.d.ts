@@ -23,6 +23,7 @@ export declare abstract class FormProperty {
     private _path;
     constructor(schemaValidatorFactory: SchemaValidatorFactory, validatorRegistry: ValidatorRegistry, schema: any, parent: PropertyGroup, path: string);
     private setTemplateValue();
+    private setCopiedValue();
     readonly valueChanges: BehaviorSubject<any>;
     readonly errorsChanges: BehaviorSubject<any>;
     readonly type: string;
