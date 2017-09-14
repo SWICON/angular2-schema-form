@@ -15,7 +15,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
 import isEqual from 'lodash.isequal';
-import { interpolate } from './interpolate';
+import { getProperties, interpolate } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
         var _this = this;
@@ -36,11 +36,21 @@ var FormProperty = (function () {
             this._root = this;
         }
         this._path = path;
-        // if (this.schema.template) {
-        //   this.schema.readOnly = true;
-        //   this.root.valueChanges.subscribe(() => this.setTemplateValue());
-        // }
-        //
+        if (this.schema.template) {
+            this.root.initialized.subscribe(function (initialized) {
+                if (initialized) {
+                    var props = getProperties(_this.schema.template);
+                    props.forEach(function (prop) {
+                        var sub = _this.subscribeToChangeOf(prop);
+                        if (sub) {
+                            sub.subscribe(function (value) {
+                                _this.setTemplateValue();
+                            });
+                        }
+                    });
+                }
+            });
+        }
         if (this.schema.value) {
             this.root.initialized.subscribe(function (initialized) {
                 if (initialized) {

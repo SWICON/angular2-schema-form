@@ -50,7 +50,6 @@ var FormPropertyFactory = (function () {
                     newProperty = new BooleanProperty(this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
                     break;
                 case 'object':
-                    console.log("create object: " + path + " -  " + new Date().toISOString());
                     newProperty = new ObjectProperty(this, this.schemaValidatorFactory, this.validatorRegistry, refSchema, parent, path);
                     break;
                 case 'array':

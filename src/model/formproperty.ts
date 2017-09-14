@@ -42,11 +42,21 @@ export abstract class FormProperty {
     }
     this._path = path;
 
-    // if (this.schema.template) {
-    //   this.schema.readOnly = true;
-    //   this.root.valueChanges.subscribe(() => this.setTemplateValue());
-    // }
-    //
+    if (this.schema.template) {
+      (<ObjectProperty>this.root).initialized.subscribe(initialized => {
+        if (initialized) {
+          const props = getProperties(this.schema.template);
+          props.forEach(prop => {
+            const sub = this.subscribeToChangeOf(prop);
+            if (sub) {
+              sub.subscribe(value => {
+                this.setTemplateValue();
+              });
+            }
+          });
+        }
+      });
+    }
     if (this.schema.value) {
       (<ObjectProperty>this.root).initialized.subscribe(initialized => {
         if (initialized) {
