@@ -9,6 +9,7 @@ import isEqual from 'lodash.isequal';
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
 import {Validator} from './validator';
+import {ObjectProperty} from './objectproperty';
 import {FormControl} from '@angular/forms';
 import {getProperties, interpolate, resolveValue} from './interpolate';
 
@@ -47,16 +48,16 @@ export abstract class FormProperty {
     }
 
     if (this.schema.value) {
-      // this.schema.readOnly = true;
-      // this.root.valueChanges.subscribe(() => this.setCopiedValue());
-      const sub = this.subscribeToChangeOf(this.schema.value);
-      if (sub) {
-        sub.subscribe(value => {
-          this.setCopiedValue(value);
-        });
-      }
-      // const props = getProperties(this.schema.value);
-      // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
+      (<ObjectProperty>this.root).initialized.subscribe(initialized => {
+        if (initialized) {
+          const sub = this.subscribeToChangeOf(this.schema.value);
+          if (sub) {
+            sub.subscribe(value => {
+              this.setCopiedValue(value);
+            });
+          }
+        }
+      });
     }
   }
 
@@ -85,14 +86,6 @@ export abstract class FormProperty {
 
   private setCopiedValue(newValue) {
     this.setValue(newValue, false);
-    // if (this.schema.value) {
-    //   const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-    //   if (newValue && !isEqual(this._value, newValue)) {
-    //     this.setValue(newValue, false);
-    //   } else if (!isEqual(this._value, newValue)) {
-    //     this.setValue(newValue, true);
-    //   }
-    // }
   }
 
   public get valueChanges() {

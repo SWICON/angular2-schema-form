@@ -41,16 +41,16 @@ var FormProperty = (function () {
             this.root.valueChanges.subscribe(function () { return _this.setTemplateValue(); });
         }
         if (this.schema.value) {
-            // this.schema.readOnly = true;
-            // this.root.valueChanges.subscribe(() => this.setCopiedValue());
-            var sub = this.subscribeToChangeOf(this.schema.value);
-            if (sub) {
-                sub.subscribe(function (value) {
-                    _this.setCopiedValue(value);
-                });
-            }
-            // const props = getProperties(this.schema.value);
-            // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
+            this.root.initialized.subscribe(function (initialized) {
+                if (initialized) {
+                    var sub = _this.subscribeToChangeOf(_this.schema.value);
+                    if (sub) {
+                        sub.subscribe(function (value) {
+                            _this.setCopiedValue(value);
+                        });
+                    }
+                }
+            });
         }
     }
     FormProperty.prototype.subscribeToChangeOf = function (propertyId) {
@@ -78,14 +78,6 @@ var FormProperty = (function () {
     };
     FormProperty.prototype.setCopiedValue = function (newValue) {
         this.setValue(newValue, false);
-        // if (this.schema.value) {
-        //   const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-        //   if (newValue && !isEqual(this._value, newValue)) {
-        //     this.setValue(newValue, false);
-        //   } else if (!isEqual(this._value, newValue)) {
-        //     this.setValue(newValue, true);
-        //   }
-        // }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
         get: function () {

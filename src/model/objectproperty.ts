@@ -2,8 +2,11 @@ import {PropertyGroup} from './formproperty';
 import {FormPropertyFactory} from './formpropertyfactory';
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 export class ObjectProperty extends PropertyGroup {
+
+  public initialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private propertiesId: string[] = [];
 
@@ -50,6 +53,7 @@ export class ObjectProperty extends PropertyGroup {
         this.propertiesId.push(propertyId);
       }
     }
+    this.initialized.next(true);
   }
 
   public _hasValue(): boolean {

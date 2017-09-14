@@ -9,11 +9,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { PropertyGroup } from './formproperty';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 var ObjectProperty = (function (_super) {
     __extends(ObjectProperty, _super);
     function ObjectProperty(formPropertyFactory, schemaValidatorFactory, validatorRegistry, schema, parent, path) {
         var _this = _super.call(this, schemaValidatorFactory, validatorRegistry, schema, parent, path) || this;
         _this.formPropertyFactory = formPropertyFactory;
+        _this.initialized = new BehaviorSubject(false);
         _this.propertiesId = [];
         _this.createProperties();
         return _this;
@@ -49,6 +51,7 @@ var ObjectProperty = (function (_super) {
                 this.propertiesId.push(propertyId);
             }
         }
+        this.initialized.next(true);
     };
     ObjectProperty.prototype._hasValue = function () {
         return !!Object.keys(this.value).length;
