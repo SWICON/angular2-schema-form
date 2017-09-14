@@ -65,7 +65,9 @@ export abstract class FormProperty {
             sub.valueChanges.subscribe(value => {
               this.setCopiedValue(value);
             });
-            this.reset(sub.value, false);
+            setTimeout(() => {
+              this.setValue(sub.value, false);
+            });
           }
         }
       });

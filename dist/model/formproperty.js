@@ -53,12 +53,14 @@ var FormProperty = (function () {
         if (this.schema.value) {
             this.root.initialized.subscribe(function (initialized) {
                 if (initialized) {
-                    var sub = _this.subscribeToChangeOf(_this.schema.value);
-                    if (sub) {
-                        sub.valueChanges.subscribe(function (value) {
+                    var sub_1 = _this.subscribeToChangeOf(_this.schema.value);
+                    if (sub_1) {
+                        sub_1.valueChanges.subscribe(function (value) {
                             _this.setCopiedValue(value);
                         });
-                        _this.reset(sub.value, false);
+                        setTimeout(function () {
+                            _this.setValue(sub_1.value, false);
+                        });
                     }
                 }
             });
