@@ -1,3 +1,5 @@
+import {isUndefined} from 'util';
+
 const VARIABLE_MATCHER = /(\B\${1,2}[\w\[\]*\d.]+)/g;
 const AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 const ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
@@ -177,7 +179,7 @@ export function interpolate(template, rootModel, parentModel) {
     resetRegex(AGGREGATE_FUNC_MATCHER);
 
     if (!canResolveVariables(template, rootModel, parentModel)) {
-      return null;
+      return undefined;
     } else {
       return solveMathFunctions(replaceVariables(template, rootModel, parentModel));
     }
