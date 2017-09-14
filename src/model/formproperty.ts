@@ -49,13 +49,18 @@ export abstract class FormProperty {
     if (this.schema.value) {
       // this.schema.readOnly = true;
       // this.root.valueChanges.subscribe(() => this.setCopiedValue());
-      this.subscribeToChangeOf(this.schema.value, this.setCopiedValue);
+      const sub = this.subscribeToChangeOf(this.schema.value);
+      if (sub) {
+        sub.subscribe(value => {
+          this.setCopiedValue(value);
+        });
+      }
       // const props = getProperties(this.schema.value);
       // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
     }
   }
 
-  private subscribeToChangeOf(propertyId, callback) {
+  private subscribeToChangeOf(propertyId) {
     let found;
     if (propertyId.startsWith('$$')) {
       found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
@@ -63,7 +68,7 @@ export abstract class FormProperty {
       found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
     }
     if (found) {
-      found.valueChanges.subscribe(value => callback.apply(this, value));
+      return found.valueChanges;
     }
   }
 

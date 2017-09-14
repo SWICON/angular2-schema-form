@@ -43,13 +43,17 @@ var FormProperty = (function () {
         if (this.schema.value) {
             // this.schema.readOnly = true;
             // this.root.valueChanges.subscribe(() => this.setCopiedValue());
-            this.subscribeToChangeOf(this.schema.value, this.setCopiedValue);
+            var sub = this.subscribeToChangeOf(this.schema.value);
+            if (sub) {
+                sub.subscribe(function (value) {
+                    _this.setCopiedValue(value);
+                });
+            }
             // const props = getProperties(this.schema.value);
             // props.forEach(prop => this.subscribeToChangeOf(prop, this.setCopiedValue));
         }
     }
-    FormProperty.prototype.subscribeToChangeOf = function (propertyId, callback) {
-        var _this = this;
+    FormProperty.prototype.subscribeToChangeOf = function (propertyId) {
         var found;
         if (propertyId.startsWith('$$')) {
             found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
@@ -58,7 +62,7 @@ var FormProperty = (function () {
             found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
         }
         if (found) {
-            found.valueChanges.subscribe(function (value) { return callback.apply(_this, value); });
+            return found.valueChanges;
         }
     };
     FormProperty.prototype.setTemplateValue = function () {
