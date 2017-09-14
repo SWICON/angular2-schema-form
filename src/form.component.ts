@@ -90,7 +90,9 @@ export class FormComponent implements OnChanges {
         this.terminator.destroy();
       }
       SchemaPreprocessor.preprocess(this.schema);
+      console.log('start processing', new Date().toISOString());
       this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
+      console.log('stop processing', new Date().toISOString());
       this.rootProperty.valueChanges.subscribe(value => {
         this.onChange.emit({value: value});
       });
