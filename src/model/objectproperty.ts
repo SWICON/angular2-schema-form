@@ -44,7 +44,7 @@ export class ObjectProperty extends PropertyGroup {
   }
 
   createProperties() {
-    if (this.schema !== 'search' && this.schema.id !== 'search') {
+    if (this.schema.widget.id !== 'search') {
       this.properties = {};
       this.propertiesId = [];
       for (const propertyId in this.schema.properties) {

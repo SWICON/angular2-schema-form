@@ -42,7 +42,7 @@ var ObjectProperty = (function (_super) {
         }
     };
     ObjectProperty.prototype.createProperties = function () {
-        if (this.schema !== 'search' && this.schema.id !== 'search') {
+        if (this.schema.widget.id !== 'search') {
             this.properties = {};
             this.propertiesId = [];
             for (var propertyId in this.schema.properties) {
