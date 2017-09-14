@@ -45,6 +45,7 @@ var FormProperty = (function () {
                             sub.subscribe(function (value) {
                                 _this.setTemplateValue();
                             });
+                            _this.setTemplateValue();
                         }
                     });
                 }
@@ -55,9 +56,10 @@ var FormProperty = (function () {
                 if (initialized) {
                     var sub = _this.subscribeToChangeOf(_this.schema.value);
                     if (sub) {
-                        sub.subscribe(function (value) {
+                        sub.valueChanges.subscribe(function (value) {
                             _this.setCopiedValue(value);
                         });
+                        _this.setCopiedValue(sub.value);
                     }
                 }
             });
@@ -71,9 +73,7 @@ var FormProperty = (function () {
         else if (propertyId.startsWith('$')) {
             found = this.parent.getProperty(propertyId.replace('$', '').replace(/\./g, '/'));
         }
-        if (found) {
-            return found.valueChanges;
-        }
+        return found;
     };
     FormProperty.prototype.setTemplateValue = function () {
         var _this = this;
@@ -84,11 +84,6 @@ var FormProperty = (function () {
                     _this.setValue(newValue, false);
                 }
             });
-            // if (newValue && !isEqual(this._value, newValue)) {
-            //   this.setValue(newValue, false);
-            // } else if (!isEqual(this._value, newValue)) {
-            //   this.setValue(newValue, true);
-            // }
         }
     };
     FormProperty.prototype.setCopiedValue = function (newValue) {

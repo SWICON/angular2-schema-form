@@ -52,6 +52,7 @@ export abstract class FormProperty {
               sub.subscribe(value => {
                 this.setTemplateValue();
               });
+              this.setTemplateValue();
             }
           });
         }
@@ -62,9 +63,10 @@ export abstract class FormProperty {
         if (initialized) {
           const sub = this.subscribeToChangeOf(this.schema.value);
           if (sub) {
-            sub.subscribe(value => {
+            sub.valueChanges.subscribe(value => {
               this.setCopiedValue(value);
             });
+            this.setCopiedValue(sub.value);
           }
         }
       });
@@ -78,9 +80,7 @@ export abstract class FormProperty {
     } else if (propertyId.startsWith('$')) {
       found = this.parent.getProperty(propertyId.replace('$', '').replace(/\./g, '/'));
     }
-    if (found) {
-      return found.valueChanges;
-    }
+    return found;
   }
 
   private setTemplateValue() {
@@ -91,12 +91,6 @@ export abstract class FormProperty {
           this.setValue(newValue, false);
         }
       });
-
-      // if (newValue && !isEqual(this._value, newValue)) {
-      //   this.setValue(newValue, false);
-      // } else if (!isEqual(this._value, newValue)) {
-      //   this.setValue(newValue, true);
-      // }
     }
   }
 
