@@ -15,7 +15,7 @@ var StringProperty = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     StringProperty.prototype.fallbackValue = function () {
-        return '';
+        return null;
     };
     return StringProperty;
 }(AtomicProperty));
