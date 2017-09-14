@@ -186,7 +186,7 @@ export function interpolate(template, rootModel, parentModel) {
         resetRegex(ARITHMETIC_OP_MATCHER2);
         resetRegex(AGGREGATE_FUNC_MATCHER);
         if (!canResolveVariables(template, rootModel, parentModel)) {
-            return undefined;
+            return null;
         }
         else {
             return solveMathFunctions(replaceVariables(template, rootModel, parentModel));
