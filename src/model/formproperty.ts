@@ -49,7 +49,7 @@ export abstract class FormProperty {
           props.forEach(prop => {
             const sub = this.subscribeToChangeOf(prop);
             if (sub) {
-              sub.subscribe(value => {
+              sub.valueChanges.subscribe(value => {
                 this.setTemplateValue();
               });
               this.setTemplateValue();

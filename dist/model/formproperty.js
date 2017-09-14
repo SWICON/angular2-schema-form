@@ -42,7 +42,7 @@ var FormProperty = (function () {
                     props.forEach(function (prop) {
                         var sub = _this.subscribeToChangeOf(prop);
                         if (sub) {
-                            sub.subscribe(function (value) {
+                            sub.valueChanges.subscribe(function (value) {
                                 _this.setTemplateValue();
                             });
                             _this.setTemplateValue();
