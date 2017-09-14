@@ -13,7 +13,7 @@ var utils = {
             if (k === '*' && Array.isArray(o)) {
                 return { value: o.map(function (item) { return item[a[i + 1]]; }) };
             }
-            else if (k in o) {
+            else if (o && k in o) {
                 o = o[k];
             }
             else {
