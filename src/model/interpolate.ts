@@ -169,7 +169,7 @@ export function getProperties(template) {
   const props = [];
   let match;
   while (match = REF_MATCHER.exec(template)) {
-    props.push(match[1]);
+    props.push(match[0]);
   }
   return props;
 }

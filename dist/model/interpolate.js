@@ -176,7 +176,7 @@ export function getProperties(template) {
     var props = [];
     var match;
     while (match = REF_MATCHER.exec(template)) {
-        props.push(match[1]);
+        props.push(match[0]);
     }
     return props;
 }
