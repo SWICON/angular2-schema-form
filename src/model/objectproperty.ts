@@ -54,7 +54,7 @@ export class ObjectProperty extends PropertyGroup {
       }
     }
     this.initialized.next(true);
-    console.log(new Date().toISOString());
+    console.log(`end object: ${this.path} -  ${new Date().toISOString()}`);
   }
 
   public _hasValue(): boolean {

@@ -52,7 +52,7 @@ var ObjectProperty = (function (_super) {
             }
         }
         this.initialized.next(true);
-        console.log(new Date().toISOString());
+        console.log("end object: " + this.path + " -  " + new Date().toISOString());
     };
     ObjectProperty.prototype._hasValue = function () {
         return !!Object.keys(this.value).length;
