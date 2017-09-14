@@ -44,13 +44,15 @@ export class ObjectProperty extends PropertyGroup {
   }
 
   createProperties() {
-    this.properties = {};
-    this.propertiesId = [];
-    for (const propertyId in this.schema.properties) {
-      if (this.schema.properties.hasOwnProperty(propertyId)) {
-        const propertySchema = this.schema.properties[propertyId];
-        this.properties[propertyId] = this.formPropertyFactory.createProperty(propertySchema, this, propertyId);
-        this.propertiesId.push(propertyId);
+    if (this.schema !== 'search' && this.schema.id !== 'search') {
+      this.properties = {};
+      this.propertiesId = [];
+      for (const propertyId in this.schema.properties) {
+        if (this.schema.properties.hasOwnProperty(propertyId)) {
+          const propertySchema = this.schema.properties[propertyId];
+          this.properties[propertyId] = this.formPropertyFactory.createProperty(propertySchema, this, propertyId);
+          this.propertiesId.push(propertyId);
+        }
       }
     }
     this.initialized.next(true);
