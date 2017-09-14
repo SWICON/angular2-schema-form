@@ -45,7 +45,6 @@ var FormProperty = (function () {
                             sub.valueChanges.subscribe(function (value) {
                                 _this.setTemplateValue();
                             });
-                            _this.setTemplateValue();
                         }
                     });
                 }

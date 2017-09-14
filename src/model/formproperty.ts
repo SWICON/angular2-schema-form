@@ -52,7 +52,6 @@ export abstract class FormProperty {
               sub.valueChanges.subscribe(value => {
                 this.setTemplateValue();
               });
-              this.setTemplateValue();
             }
           });
         }
