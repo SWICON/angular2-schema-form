@@ -59,14 +59,12 @@ var FormProperty = (function () {
     FormProperty.prototype.setCopiedValue = function () {
         if (this.schema.value) {
             var newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-            if (!isEqual(this._value, newValue)) {
+            if (newValue && !isEqual(this._value, newValue)) {
                 this.setValue(newValue, false);
             }
-            // if (newValue && !isEqual(this._value, newValue)) {
-            //   this.setValue(newValue, false);
-            // } else if (!isEqual(this._value, newValue)) {
-            //   this.setValue(newValue, true);
-            // }
+            else if (!isEqual(this._value, newValue)) {
+                this.setValue(newValue, true);
+            }
         }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {

@@ -66,14 +66,11 @@ export abstract class FormProperty {
   private setCopiedValue() {
     if (this.schema.value) {
       const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
-      if (!isEqual(this._value, newValue)) {
+      if (newValue && !isEqual(this._value, newValue)) {
         this.setValue(newValue, false);
+      } else if (!isEqual(this._value, newValue)) {
+        this.setValue(newValue, true);
       }
-      // if (newValue && !isEqual(this._value, newValue)) {
-      //   this.setValue(newValue, false);
-      // } else if (!isEqual(this._value, newValue)) {
-      //   this.setValue(newValue, true);
-      // }
     }
   }
 
