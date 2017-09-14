@@ -47,7 +47,7 @@ var FormProperty = (function () {
                 this.setValue(newValue, false);
             }
             else {
-                this._value = newValue;
+                this.setValue(newValue, true);
             }
         }
     };
