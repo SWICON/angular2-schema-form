@@ -49,6 +49,7 @@ var FormProperty = (function () {
         }
     }
     FormProperty.prototype.subscribeToChangeOf = function (propertyId, callback) {
+        var _this = this;
         var found;
         if (propertyId.startsWith('$$')) {
             found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
@@ -57,7 +58,7 @@ var FormProperty = (function () {
             found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
         }
         if (found) {
-            found.valueChanges.subscribe(function (value) { return callback(value); });
+            found.valueChanges.subscribe(function (value) { return callback.apply(_this, value); });
         }
     };
     FormProperty.prototype.setTemplateValue = function () {

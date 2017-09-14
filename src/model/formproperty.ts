@@ -63,7 +63,7 @@ export abstract class FormProperty {
       found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
     }
     if (found) {
-      found.valueChanges.subscribe(value => callback(value));
+      found.valueChanges.subscribe(value => callback.apply(this, value));
     }
   }
 
