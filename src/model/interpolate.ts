@@ -5,6 +5,7 @@ const AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 const ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
 const ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 const TOKEN_MATCHER = /{([^{}]*)}/g;
+const REF_MATCHER = /\B\$\w+/g;
 
 const utils = {
   resolveVariable: function resolveVariable(o, s) {
@@ -164,10 +165,10 @@ function hasMathFunctions(template) {
 }
 
 export function getProperties(template) {
-  resetRegex(TOKEN_MATCHER);
+  resetRegex(REF_MATCHER);
   const props = [];
   let match;
-  while (match = TOKEN_MATCHER.exec(template)) {
+  while (match = REF_MATCHER.exec(template)) {
     props.push(match[1]);
   }
   return props;

@@ -3,6 +3,7 @@ var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 var ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
 var ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 var TOKEN_MATCHER = /{([^{}]*)}/g;
+var REF_MATCHER = /\B\$\w+/g;
 var utils = {
     resolveVariable: function resolveVariable(o, s) {
         s = s.replace(/\[(\*|\w+)]/g, '.$1');
@@ -171,10 +172,10 @@ function hasMathFunctions(template) {
     return hasMath;
 }
 export function getProperties(template) {
-    resetRegex(TOKEN_MATCHER);
+    resetRegex(REF_MATCHER);
     var props = [];
     var match;
-    while (match = TOKEN_MATCHER.exec(template)) {
+    while (match = REF_MATCHER.exec(template)) {
         props.push(match[1]);
     }
     return props;
