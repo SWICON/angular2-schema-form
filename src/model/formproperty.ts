@@ -9,7 +9,7 @@ import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
 import {Validator} from './validator';
 import {FormControl} from '@angular/forms';
-import {interpolate} from './interpolate';
+import {interpolate, resolveValue} from './interpolate';
 
 export abstract class FormProperty {
   public schemaValidator: Function;
@@ -82,7 +82,11 @@ export abstract class FormProperty {
   }
 
   public get value() {
-    return this._value;
+    if (this.schema.value) {
+      return resolveValue(this.schema.value, this.root.value, this.parent.value);
+    } else {
+      return this._value;
+    }
   }
 
   public get visible() {

@@ -102,12 +102,7 @@ function replaceVariables(template, rootModel, parentModel) {
     if (match = VARIABLE_MATCHER.exec(res)) {
       do {
         const str = match[0];
-        let toReplace = undefined;
-        if (str.startsWith('$$')) {
-          toReplace = utils.resolveVariable(rootModel, str.replace('$$', ''))
-        } else if (str.startsWith('$')) {
-          toReplace = utils.resolveVariable(parentModel, str.replace('$', ''));
-        }
+        let toReplace = resolveValue(str, rootModel, parentModel);
         if (['', undefined, null, NaN].includes(toReplace)) {
           toReplace = '';
         }
@@ -167,6 +162,15 @@ function hasMathFunctions(template) {
   }
   return hasMath;
 }
+
+export function resolveValue(path, rootModel, parentModel) {
+  if (path.startsWith('$$')) {
+    return utils.resolveVariable(rootModel, path.replace('$$', ''))
+  } else if (path.startsWith('$')) {
+    return utils.resolveVariable(parentModel, path.replace('$', ''));
+  }
+}
+
 export function interpolate(template, rootModel, parentModel) {
   if (!rootModel || !parentModel) {
     return null;

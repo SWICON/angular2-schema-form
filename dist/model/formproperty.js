@@ -14,7 +14,7 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/distinctUntilChanged';
-import { interpolate } from './interpolate';
+import { interpolate, resolveValue } from './interpolate';
 var FormProperty = (function () {
     function FormProperty(schemaValidatorFactory, validatorRegistry, schema, parent, path) {
         var _this = this;
@@ -95,7 +95,12 @@ var FormProperty = (function () {
     });
     Object.defineProperty(FormProperty.prototype, "value", {
         get: function () {
-            return this._value;
+            if (this.schema.value) {
+                return resolveValue(this.schema.value, this.root.value, this.parent.value);
+            }
+            else {
+                return this._value;
+            }
         },
         enumerable: true,
         configurable: true
