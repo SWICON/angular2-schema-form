@@ -76,9 +76,12 @@ var FormProperty = (function () {
         }
     };
     FormProperty.prototype.setTemplateValue = function () {
+        var _this = this;
         if (this.schema.template) {
-            var newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-            this.setValue(newValue, false);
+            setTimeout(function () {
+                var newValue = interpolate(_this.schema.template, _this.root.value, _this.parent.value);
+                _this.setValue(newValue, false);
+            });
             // if (newValue && !isEqual(this._value, newValue)) {
             //   this.setValue(newValue, false);
             // } else if (!isEqual(this._value, newValue)) {
