@@ -76,7 +76,7 @@ export abstract class FormProperty {
     if (propertyId.startsWith('$$')) {
       found = this.root.searchProperty(propertyId.replace('$$', '/').replace(/\./g, '/'));
     } else if (propertyId.startsWith('$')) {
-      found = this.parent.searchProperty(propertyId.replace('$', '/').replace(/\./g, '/'));
+      found = this.parent.getProperty(propertyId.replace('$', '').replace(/\./g, '/'));
     }
     if (found) {
       return found.valueChanges;
