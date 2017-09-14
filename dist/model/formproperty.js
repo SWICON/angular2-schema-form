@@ -46,6 +46,9 @@ var FormProperty = (function () {
             if (newValue && this._value !== newValue) {
                 this.setValue(newValue, false);
             }
+            else {
+                this._value = newValue;
+            }
         }
     };
     Object.defineProperty(FormProperty.prototype, "valueChanges", {
