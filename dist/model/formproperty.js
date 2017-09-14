@@ -50,7 +50,7 @@ var FormProperty = (function () {
             if (newValue && this._value !== newValue) {
                 this.setValue(newValue, false);
             }
-            else {
+            else if (this._value !== newValue) {
                 this.setValue(newValue, true);
             }
         }
@@ -61,7 +61,7 @@ var FormProperty = (function () {
             if (newValue && this._value !== newValue) {
                 this.setValue(newValue, false);
             }
-            else {
+            else if (this._value !== newValue) {
                 this.setValue(newValue, true);
             }
         }

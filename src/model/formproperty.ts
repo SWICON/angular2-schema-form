@@ -56,7 +56,7 @@ export abstract class FormProperty {
       const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
       if (newValue && this._value !== newValue) {
         this.setValue(newValue, false);
-      } else {
+      } else if (this._value !== newValue) {
         this.setValue(newValue, true);
       }
     }
@@ -67,7 +67,7 @@ export abstract class FormProperty {
       const newValue = resolveValue(this.schema.value, this.root.value, this.parent.value);
       if (newValue && this._value !== newValue) {
         this.setValue(newValue, false);
-      } else {
+      } else if (this._value !== newValue) {
         this.setValue(newValue, true);
       }
     }
