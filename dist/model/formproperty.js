@@ -58,7 +58,7 @@ var FormProperty = (function () {
                         sub.valueChanges.subscribe(function (value) {
                             _this.setCopiedValue(value);
                         });
-                        _this.setCopiedValue(sub.value);
+                        _this.reset(sub.value, false);
                     }
                 }
             });
