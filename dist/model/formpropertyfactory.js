@@ -37,7 +37,6 @@ var FormPropertyFactory = (function () {
             if (schema.widget && schema.widget.id) {
                 refSchema.widget = schema.widget;
             }
-            // newProperty = this.createProperty(refSchema, parent, path);
             switch (refSchema.type) {
                 case 'integer':
                 case 'number':
@@ -72,7 +71,6 @@ var FormPropertyFactory = (function () {
                     newProperty = new BooleanProperty(this.schemaValidatorFactory, this.validatorRegistry, schema, parent, path);
                     break;
                 case 'object':
-                    console.log("create object: " + path + " -  " + new Date().toISOString());
                     newProperty = new ObjectProperty(this, this.schemaValidatorFactory, this.validatorRegistry, schema, parent, path);
                     break;
                 case 'array':
