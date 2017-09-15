@@ -81,7 +81,7 @@ var FormProperty = (function () {
         if (this.schema.template) {
             setTimeout(function () {
                 var newValue = interpolate(_this.schema.template, _this.root.value, _this.parent.value);
-                if (!isNaN(newValue) && newValue !== undefined) {
+                if (!Number.isNaN(newValue) && newValue !== undefined) {
                     _this.setValue(newValue, false);
                 }
             });

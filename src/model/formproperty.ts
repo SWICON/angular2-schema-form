@@ -88,7 +88,7 @@ export abstract class FormProperty {
     if (this.schema.template) {
       setTimeout(() => {
         const newValue = interpolate(this.schema.template, this.root.value, this.parent.value);
-        if (!isNaN(newValue) && newValue !== undefined) {
+        if (!Number.isNaN(newValue) && newValue !== undefined) {
           this.setValue(newValue, false);
         }
       });
