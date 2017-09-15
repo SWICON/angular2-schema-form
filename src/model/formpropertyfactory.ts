@@ -33,7 +33,9 @@ export class FormPropertyFactory {
     if (schema.$ref) {
       const found = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
       const refSchema = Object.assign({}, found);
-      refSchema.visibleIf = schema.visibleIf;
+      if (schema.visibleIf) {
+        refSchema.visibleIf = schema.visibleIf;
+      }
       if (schema.widget && schema.widget.id) {
         refSchema.widget = schema.widget;
       }
