@@ -5,6 +5,7 @@ import { WidgetFactory } from './widgetfactory';
 import { TerminatorService } from './terminator.service';
 import { PropertyGroup } from './model/formproperty';
 import { isUndefined } from 'util';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
     return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
 }
@@ -22,6 +23,7 @@ var FormComponent = (function () {
         this.isValid = new EventEmitter();
         this.onErrorChange = new EventEmitter();
         this.rootProperty = null;
+        this.isInitialized = new BehaviorSubject(false);
     }
     FormComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
@@ -39,9 +41,7 @@ var FormComponent = (function () {
                 this.terminator.destroy();
             }
             SchemaPreprocessor.preprocess(this.schema);
-            console.log('start processing', new Date().toISOString());
             this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
-            console.log('stop processing', new Date().toISOString());
             this.rootProperty.valueChanges.subscribe(function (value) {
                 _this.onChange.emit({ value: value });
             });
@@ -52,6 +52,7 @@ var FormComponent = (function () {
         }
         if (this.schema && (changes.model || changes.schema)) {
             this.rootProperty.reset(this.model, false);
+            this.isInitialized.next(true);
             this.cdr.detectChanges();
         }
     };

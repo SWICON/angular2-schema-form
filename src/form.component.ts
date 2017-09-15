@@ -22,6 +22,7 @@ import {WidgetFactory} from './widgetfactory';
 import {TerminatorService} from './terminator.service';
 import {PropertyGroup} from './model/formproperty';
 import {isNullOrUndefined, isUndefined} from 'util';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
   return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
@@ -65,6 +66,8 @@ export class FormComponent implements OnChanges {
 
   rootProperty: FormProperty = null;
 
+  public isInitialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private formPropertyFactory: FormPropertyFactory,
               private actionRegistry: ActionRegistry,
               private validatorRegistry: ValidatorRegistry,
@@ -90,9 +93,7 @@ export class FormComponent implements OnChanges {
         this.terminator.destroy();
       }
       SchemaPreprocessor.preprocess(this.schema);
-      console.log('start processing', new Date().toISOString());
       this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
-      console.log('stop processing', new Date().toISOString());
       this.rootProperty.valueChanges.subscribe(value => {
         this.onChange.emit({value: value});
       });
@@ -104,6 +105,7 @@ export class FormComponent implements OnChanges {
 
     if (this.schema && (changes.model || changes.schema )) {
       this.rootProperty.reset(this.model, false);
+      this.isInitialized.next(true);
       this.cdr.detectChanges();
     }
   }
