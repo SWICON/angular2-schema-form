@@ -94,6 +94,7 @@ export class FormComponent implements OnChanges {
       }
       SchemaPreprocessor.preprocess(this.schema);
       this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
+      this.isInitialized.emit(true);
       this.rootProperty.valueChanges.subscribe(value => {
         this.onChange.emit({value: value});
       });
@@ -105,7 +106,6 @@ export class FormComponent implements OnChanges {
 
     if (this.schema && (changes.model || changes.schema )) {
       this.rootProperty.reset(this.model, false);
-      this.isInitialized.emit(true);
       this.cdr.detectChanges();
     }
   }

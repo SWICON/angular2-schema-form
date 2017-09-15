@@ -41,6 +41,7 @@ var FormComponent = (function () {
             }
             SchemaPreprocessor.preprocess(this.schema);
             this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
+            this.isInitialized.emit(true);
             this.rootProperty.valueChanges.subscribe(function (value) {
                 _this.onChange.emit({ value: value });
             });
@@ -51,7 +52,6 @@ var FormComponent = (function () {
         }
         if (this.schema && (changes.model || changes.schema)) {
             this.rootProperty.reset(this.model, false);
-            this.isInitialized.emit(true);
             this.cdr.detectChanges();
         }
     };
