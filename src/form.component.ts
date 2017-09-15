@@ -64,9 +64,9 @@ export class FormComponent implements OnChanges {
 
   @Output() onErrorChange = new EventEmitter<{ value: any[] }>();
 
-  rootProperty: FormProperty = null;
+  @Output() isInitialized = new EventEmitter<boolean>();
 
-  public isInitialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  rootProperty: FormProperty = null;
 
   constructor(private formPropertyFactory: FormPropertyFactory,
               private actionRegistry: ActionRegistry,
@@ -105,7 +105,7 @@ export class FormComponent implements OnChanges {
 
     if (this.schema && (changes.model || changes.schema )) {
       this.rootProperty.reset(this.model, false);
-      this.isInitialized.next(true);
+      this.isInitialized.emit(true);
       this.cdr.detectChanges();
     }
   }
