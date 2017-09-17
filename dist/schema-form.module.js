@@ -23,63 +23,63 @@ var SchemaFormModule = (function () {
             ]
         };
     };
-    SchemaFormModule.decorators = [
-        { type: NgModule, args: [{
-                    imports: [CommonModule, FormsModule, ReactiveFormsModule],
-                    declarations: [
-                        FormElementComponent,
-                        FormElementComponentAction,
-                        FormComponent,
-                        WidgetChooserComponent,
-                        DefaultWidget,
-                        ArrayWidget,
-                        ButtonWidget,
-                        ObjectWidget,
-                        CheckboxWidget,
-                        FileWidget,
-                        IntegerWidget,
-                        TextAreaWidget,
-                        RadioWidget,
-                        RangeWidget,
-                        SelectWidget,
-                        StringWidget,
-                    ],
-                    entryComponents: [
-                        FormElementComponent,
-                        FormElementComponentAction,
-                        FormComponent,
-                        WidgetChooserComponent,
-                        ArrayWidget,
-                        ObjectWidget,
-                        CheckboxWidget,
-                        FileWidget,
-                        IntegerWidget,
-                        TextAreaWidget,
-                        RadioWidget,
-                        RangeWidget,
-                        SelectWidget,
-                        StringWidget,
-                    ],
-                    exports: [
-                        FormComponent,
-                        FormElementComponent,
-                        FormElementComponentAction,
-                        WidgetChooserComponent,
-                        ArrayWidget,
-                        ObjectWidget,
-                        CheckboxWidget,
-                        FileWidget,
-                        IntegerWidget,
-                        TextAreaWidget,
-                        RadioWidget,
-                        RangeWidget,
-                        SelectWidget,
-                        StringWidget
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    SchemaFormModule.ctorParameters = function () { return []; };
     return SchemaFormModule;
 }());
 export { SchemaFormModule };
+SchemaFormModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CommonModule, FormsModule, ReactiveFormsModule],
+                declarations: [
+                    FormElementComponent,
+                    FormElementComponentAction,
+                    FormComponent,
+                    WidgetChooserComponent,
+                    DefaultWidget,
+                    ArrayWidget,
+                    ButtonWidget,
+                    ObjectWidget,
+                    CheckboxWidget,
+                    FileWidget,
+                    IntegerWidget,
+                    TextAreaWidget,
+                    RadioWidget,
+                    RangeWidget,
+                    SelectWidget,
+                    StringWidget,
+                ],
+                entryComponents: [
+                    FormElementComponent,
+                    FormElementComponentAction,
+                    FormComponent,
+                    WidgetChooserComponent,
+                    ArrayWidget,
+                    ObjectWidget,
+                    CheckboxWidget,
+                    FileWidget,
+                    IntegerWidget,
+                    TextAreaWidget,
+                    RadioWidget,
+                    RangeWidget,
+                    SelectWidget,
+                    StringWidget,
+                ],
+                exports: [
+                    FormComponent,
+                    FormElementComponent,
+                    FormElementComponentAction,
+                    WidgetChooserComponent,
+                    ArrayWidget,
+                    ObjectWidget,
+                    CheckboxWidget,
+                    FileWidget,
+                    IntegerWidget,
+                    TextAreaWidget,
+                    RadioWidget,
+                    RangeWidget,
+                    SelectWidget,
+                    StringWidget
+                ]
+            },] },
+];
+/** @nocollapse */
+SchemaFormModule.ctorParameters = function () { return []; };
