@@ -60,6 +60,9 @@ var ZSchemaValidatorFactory = (function (_super) {
                     });
                     result = result.concat(inners);
                 }
+                else if (error.code === 'INVALID_TYPE') {
+                    // suppress
+                }
                 else {
                     result = result.concat(err);
                 }
