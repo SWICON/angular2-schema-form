@@ -141,8 +141,8 @@ var SchemaPreprocessor = (function () {
                         item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
                         break;
                     case 'steps':
-                        if (!item.items.every(function (i) { return i.hasOwnProperty('step') && i.hasOwnProperty('title'); })) {
-                            schemaError("'steps' layout element should contain 'step' and 'title' properties.", path);
+                        if (!item.items.every(function (i) { return i.hasOwnProperty('title') && i.type === 'step'; })) {
+                            schemaError("'steps' layout element should contain 'step' type items", path);
                         }
                         else {
                             item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
