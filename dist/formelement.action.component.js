@@ -20,22 +20,22 @@ var FormElementComponentAction = (function () {
         this.ref.instance.button = this.button;
         this.ref.instance.formProperty = this.formProperty;
     };
+    FormElementComponentAction.decorators = [
+        { type: Component, args: [{
+                    selector: 'sf-form-element-action',
+                    template: '<ng-template #target></ng-template>'
+                },] },
+    ];
+    /** @nocollapse */
+    FormElementComponentAction.ctorParameters = function () { return [
+        { type: WidgetFactory, },
+        { type: TerminatorService, },
+    ]; };
+    FormElementComponentAction.propDecorators = {
+        'button': [{ type: Input },],
+        'formProperty': [{ type: Input },],
+        'container': [{ type: ViewChild, args: ['target', { read: ViewContainerRef },] },],
+    };
     return FormElementComponentAction;
 }());
 export { FormElementComponentAction };
-FormElementComponentAction.decorators = [
-    { type: Component, args: [{
-                selector: 'sf-form-element-action',
-                template: '<ng-template #target></ng-template>'
-            },] },
-];
-/** @nocollapse */
-FormElementComponentAction.ctorParameters = function () { return [
-    { type: WidgetFactory, },
-    { type: TerminatorService, },
-]; };
-FormElementComponentAction.propDecorators = {
-    'button': [{ type: Input },],
-    'formProperty': [{ type: Input },],
-    'container': [{ type: ViewChild, args: ['target', { read: ViewContainerRef },] },],
-};

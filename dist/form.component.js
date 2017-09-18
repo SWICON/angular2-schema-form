@@ -128,42 +128,42 @@ var FormComponent = (function () {
             });
         }
     };
+    FormComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'sf-form',
+                    template: "\n    <form>\n      <sf-form-element\n        *ngIf=\"rootProperty\" [formProperty]=\"rootProperty\"></sf-form-element>\n    </form>",
+                    providers: [
+                        ActionRegistry,
+                        ValidatorRegistry,
+                        SchemaPreprocessor,
+                        WidgetFactory,
+                        {
+                            provide: FormPropertyFactory,
+                            useFactory: useFactory,
+                            deps: [SchemaValidatorFactory, ValidatorRegistry]
+                        },
+                        TerminatorService,
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    FormComponent.ctorParameters = function () { return [
+        { type: FormPropertyFactory, },
+        { type: ActionRegistry, },
+        { type: ValidatorRegistry, },
+        { type: ChangeDetectorRef, },
+        { type: TerminatorService, },
+    ]; };
+    FormComponent.propDecorators = {
+        'schema': [{ type: Input },],
+        'model': [{ type: Input },],
+        'actions': [{ type: Input },],
+        'validators': [{ type: Input },],
+        'onChange': [{ type: Output },],
+        'isValid': [{ type: Output },],
+        'onErrorChange': [{ type: Output },],
+        'isInitialized': [{ type: Output },],
+    };
     return FormComponent;
 }());
 export { FormComponent };
-FormComponent.decorators = [
-    { type: Component, args: [{
-                selector: 'sf-form',
-                template: "\n    <form>\n      <sf-form-element\n        *ngIf=\"rootProperty\" [formProperty]=\"rootProperty\"></sf-form-element>\n    </form>",
-                providers: [
-                    ActionRegistry,
-                    ValidatorRegistry,
-                    SchemaPreprocessor,
-                    WidgetFactory,
-                    {
-                        provide: FormPropertyFactory,
-                        useFactory: useFactory,
-                        deps: [SchemaValidatorFactory, ValidatorRegistry]
-                    },
-                    TerminatorService,
-                ]
-            },] },
-];
-/** @nocollapse */
-FormComponent.ctorParameters = function () { return [
-    { type: FormPropertyFactory, },
-    { type: ActionRegistry, },
-    { type: ValidatorRegistry, },
-    { type: ChangeDetectorRef, },
-    { type: TerminatorService, },
-]; };
-FormComponent.propDecorators = {
-    'schema': [{ type: Input },],
-    'model': [{ type: Input },],
-    'actions': [{ type: Input },],
-    'validators': [{ type: Input },],
-    'onChange': [{ type: Output },],
-    'isValid': [{ type: Output },],
-    'onErrorChange': [{ type: Output },],
-    'isInitialized': [{ type: Output },],
-};
