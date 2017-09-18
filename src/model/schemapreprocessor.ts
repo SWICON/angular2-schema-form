@@ -143,7 +143,7 @@ export class SchemaPreprocessor {
             break;
           case 'steps':
             if (!item.items.every(i => i.hasOwnProperty('key') && i.hasOwnProperty('title'))) {
-              schemaError(`'steps' layout element should contain 'step' key 'title' properties.`, path);
+              schemaError(`'steps' layout element should contain 'key' and 'title' properties.`, path);
             } else {
               item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
             }

@@ -54,6 +54,8 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
             return ierr;
           });
           result = result.concat(inners);
+        } else if (error.code = 'INVALID_TYPE') {
+          // suppress this msg
         } else {
           result = result.concat(err);
         }
