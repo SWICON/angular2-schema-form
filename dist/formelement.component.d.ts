@@ -5,6 +5,7 @@ import { ActionRegistry, FormProperty } from './model';
 export declare class FormElementComponent implements OnInit {
     private actionRegistry;
     private static counter;
+    readOnly: boolean;
     formProperty: FormProperty;
     control: FormControl;
     widget: Widget<any>;

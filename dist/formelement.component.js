@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActionRegistry } from './model';
+import { isUndefined } from 'util';
 var FormElementComponent = (function () {
     function FormElementComponent(actionRegistry) {
         this.actionRegistry = actionRegistry;
@@ -10,6 +11,9 @@ var FormElementComponent = (function () {
     }
     FormElementComponent.prototype.ngOnInit = function () {
         this.parseButtons();
+        if (!isUndefined(this.readOnly)) {
+            this.widget.schema.readOnly = this.readOnly;
+        }
     };
     FormElementComponent.prototype.parseButtons = function () {
         if (this.formProperty.schema.buttons !== undefined) {
@@ -53,6 +57,7 @@ var FormElementComponent = (function () {
         { type: ActionRegistry, },
     ]; };
     FormElementComponent.propDecorators = {
+        'readOnly': [{ type: Input },],
         'formProperty': [{ type: Input },],
     };
     return FormElementComponent;

@@ -14,6 +14,7 @@ import {
   ActionRegistry,
   FormProperty
 } from './model';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'sf-form-element',
@@ -31,6 +32,7 @@ export class FormElementComponent implements OnInit {
 
   private static counter = 0;
 
+  @Input() readOnly: boolean;
   @Input() formProperty: FormProperty;
   control: FormControl = new FormControl('', () => null);
 
@@ -38,11 +40,13 @@ export class FormElementComponent implements OnInit {
 
   buttons = [];
 
-
   constructor(private actionRegistry: ActionRegistry) {}
 
   ngOnInit() {
     this.parseButtons();
+    if (!isUndefined(this.readOnly)) {
+      this.widget.schema.readOnly = this.readOnly;
+    }
   }
 
   private parseButtons() {
