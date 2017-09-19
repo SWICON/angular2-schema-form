@@ -37,7 +37,7 @@ var FormPropertyFactory = (function () {
             var oldSchema = omit(schema, ['$ref']);
             var refSchema = Object.assign({}, found, oldSchema);
             if (refSchema.widget.id === undefined) {
-                refSchema.widget.id = { id: refSchema.type };
+                refSchema.widget = refSchema.type;
             }
             else if (typeof refSchema.widget === 'string') {
                 refSchema.widget = { id: refSchema.widget };
