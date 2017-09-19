@@ -35,7 +35,7 @@ export class FormPropertyFactory {
       const found = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
       const oldSchema = omit(schema, ['$ref']);
       const refSchema = Object.assign({}, found, oldSchema);
-      if ((refSchema.widget || refSchema.widget.id) === undefined) {
+      if (refSchema.widget.id === undefined) {
         refSchema.widget.id = {id: refSchema.type};
       } else if (typeof refSchema.widget === 'string') {
         refSchema.widget = {id: refSchema.widget};

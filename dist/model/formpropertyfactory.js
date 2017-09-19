@@ -36,7 +36,7 @@ var FormPropertyFactory = (function () {
             var found = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
             var oldSchema = omit(schema, ['$ref']);
             var refSchema = Object.assign({}, found, oldSchema);
-            if ((refSchema.widget || refSchema.widget.id) === undefined) {
+            if (refSchema.widget.id === undefined) {
                 refSchema.widget.id = { id: refSchema.type };
             }
             else if (typeof refSchema.widget === 'string') {
