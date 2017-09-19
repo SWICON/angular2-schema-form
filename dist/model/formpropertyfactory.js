@@ -4,6 +4,7 @@ import { StringProperty } from './stringproperty';
 import { BooleanProperty } from './booleanproperty';
 import { ObjectProperty } from './objectproperty';
 import { ArrayProperty } from './arrayproperty';
+import { _omit } from 'lodash.omit';
 var FormPropertyFactory = (function () {
     function FormPropertyFactory(schemaValidatorFactory, validatorRegistry) {
         this.schemaValidatorFactory = schemaValidatorFactory;
@@ -33,13 +34,7 @@ var FormPropertyFactory = (function () {
         }
         if (schema.$ref) {
             var found = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
-            var refSchema = Object.assign({}, found);
-            if (schema.visibleIf) {
-                refSchema.visibleIf = schema.visibleIf;
-            }
-            if (schema.widget && schema.widget.id) {
-                refSchema.widget = schema.widget;
-            }
+            var refSchema = Object.assign({}, found, _omit(schema, ['$ref']));
             switch (refSchema.type) {
                 case 'integer':
                 case 'number':
