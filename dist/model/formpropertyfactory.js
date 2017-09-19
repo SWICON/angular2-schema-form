@@ -4,7 +4,7 @@ import { StringProperty } from './stringproperty';
 import { BooleanProperty } from './booleanproperty';
 import { ObjectProperty } from './objectproperty';
 import { ArrayProperty } from './arrayproperty';
-import { omit } from 'lodash.omit';
+import * as omit from 'lodash.omit';
 var FormPropertyFactory = (function () {
     function FormPropertyFactory(schemaValidatorFactory, validatorRegistry) {
         this.schemaValidatorFactory = schemaValidatorFactory;

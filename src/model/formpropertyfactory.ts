@@ -6,7 +6,7 @@ import {ObjectProperty} from './objectproperty';
 import {ArrayProperty} from './arrayproperty';
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
-import {omit} from 'lodash.omit';
+import * as omit from 'lodash.omit';
 
 export class FormPropertyFactory {
   constructor(private schemaValidatorFactory: SchemaValidatorFactory, private validatorRegistry: ValidatorRegistry) {
