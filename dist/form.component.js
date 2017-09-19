@@ -131,7 +131,7 @@ var FormComponent = (function () {
     FormComponent.decorators = [
         { type: Component, args: [{
                     selector: 'sf-form',
-                    template: "\n    <form>\n      <sf-form-element\n        *ngIf=\"rootProperty\" [formProperty]=\"rootProperty\"></sf-form-element>\n    </form>",
+                    template: '<form novalidate><sf-form-element *ngIf="rootProperty" [formProperty]="rootProperty"></sf-form-element></form>',
                     providers: [
                         ActionRegistry,
                         ValidatorRegistry,

@@ -26,7 +26,7 @@ var WidgetChooserComponent = (function () {
     WidgetChooserComponent.decorators = [
         { type: Component, args: [{
                     selector: 'sf-widget-chooser',
-                    template: "<div #target></div>",
+                    template: '<div #target></div>'
                 },] },
     ];
     /** @nocollapse */

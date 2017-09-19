@@ -30,11 +30,7 @@ export function useFactory(schemaValidatorFactory, validatorRegistry) {
 
 @Component({
   selector: 'sf-form',
-  template: `
-    <form>
-      <sf-form-element
-        *ngIf="rootProperty" [formProperty]="rootProperty"></sf-form-element>
-    </form>`,
+  template: '<form novalidate><sf-form-element *ngIf="rootProperty" [formProperty]="rootProperty"></sf-form-element></form>',
   providers: [
     ActionRegistry,
     ValidatorRegistry,

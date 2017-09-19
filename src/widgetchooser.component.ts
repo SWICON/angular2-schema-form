@@ -14,7 +14,7 @@ import { WidgetFactory } from './widgetfactory';
 
 @Component({
   selector: 'sf-widget-chooser',
-  template: `<div #target></div>`,
+  template: '<div #target></div>'
 })
 export class WidgetChooserComponent implements OnChanges {
 
