@@ -153,10 +153,7 @@ export abstract class FormProperty {
     }
   }
 
-  /**
-   * @internal
-   */
-  public abstract _hasValue(): boolean;
+  public abstract hasValue(): boolean;
 
   /**
    *  @internal

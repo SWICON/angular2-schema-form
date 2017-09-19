@@ -56,7 +56,7 @@ export class ObjectProperty extends PropertyGroup {
     this.initialized.next(true);
   }
 
-  public _hasValue(): boolean {
+  public hasValue(): boolean {
     return !!Object.keys(this.value).length;
   }
 
@@ -80,7 +80,7 @@ export class ObjectProperty extends PropertyGroup {
   private reduceValue(): void {
     const value = {};
     this.forEachChild((property, propertyId: string) => {
-      if (property.visible && property._hasValue()) {
+      if (property.visible && property.hasValue()) {
         value[propertyId] = property.value;
       }
     });

@@ -37,6 +37,7 @@ export declare abstract class FormProperty {
     abstract setValue(value: any, onlySelf: boolean): any;
     abstract reset(value: any, onlySelf: boolean): any;
     updateValueAndValidity(onlySelf?: boolean, emitEvent?: boolean): void;
+    abstract hasValue(): boolean;
     private mergeErrors(errors, newErrors);
     private setErrors(errors);
     extendErrors(errors: any): void;

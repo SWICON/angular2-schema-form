@@ -9,7 +9,7 @@ export declare class ArrayProperty extends PropertyGroup {
     private addProperty();
     removeItem(index: number): void;
     setValue(value: any, onlySelf: boolean): void;
-    _hasValue(): boolean;
+    hasValue(): boolean;
     _updateValue(): void;
     private reduceValue();
     reset(value: any, onlySelf?: boolean): void;

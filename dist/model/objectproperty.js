@@ -53,7 +53,7 @@ var ObjectProperty = (function (_super) {
         }
         this.initialized.next(true);
     };
-    ObjectProperty.prototype._hasValue = function () {
+    ObjectProperty.prototype.hasValue = function () {
         return !!Object.keys(this.value).length;
     };
     ObjectProperty.prototype._updateValue = function () {
@@ -74,7 +74,7 @@ var ObjectProperty = (function (_super) {
     ObjectProperty.prototype.reduceValue = function () {
         var value = {};
         this.forEachChild(function (property, propertyId) {
-            if (property.visible && property._hasValue()) {
+            if (property.visible && property.hasValue()) {
                 value[propertyId] = property.value;
             }
         });

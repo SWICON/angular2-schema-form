@@ -37,7 +37,7 @@ export class ArrayProperty extends PropertyGroup {
     this.updateValueAndValidity(onlySelf, true);
   }
 
-  public _hasValue(): boolean {
+  public hasValue(): boolean {
     return this.value && this.value.length;
   }
 
@@ -48,7 +48,7 @@ export class ArrayProperty extends PropertyGroup {
   private reduceValue(): void {
     const value = [];
     this.forEachChild((property, _) => {
-      if (property.visible && property._hasValue()) {
+      if (property.visible && property.hasValue()) {
         value.push(property.value);
       }
     });

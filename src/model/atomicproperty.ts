@@ -25,12 +25,12 @@ export abstract class AtomicProperty extends FormProperty {
     }
     this._value = value;
 
-    if (this.schema.immutable && this._hasValue()) {
+    if (this.schema.immutable && this.hasValue()) {
       this.schema.readOnly = true;
     }
   }
 
-  public _hasValue(): boolean {
+  public hasValue(): boolean {
     return this.fallbackValue() !== this.value;
   }
 

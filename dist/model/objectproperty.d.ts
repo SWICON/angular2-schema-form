@@ -12,7 +12,7 @@ export declare class ObjectProperty extends PropertyGroup {
     reset(value: any, onlySelf?: boolean): void;
     resetProperties(value: any): void;
     createProperties(): void;
-    _hasValue(): boolean;
+    hasValue(): boolean;
     _updateValue(): void;
     _runValidation(): void;
     private reduceValue();

@@ -38,11 +38,11 @@ var AtomicProperty = (function (_super) {
             }
         }
         this._value = value;
-        if (this.schema.immutable && this._hasValue()) {
+        if (this.schema.immutable && this.hasValue()) {
             this.schema.readOnly = true;
         }
     };
-    AtomicProperty.prototype._hasValue = function () {
+    AtomicProperty.prototype.hasValue = function () {
         return this.fallbackValue() !== this.value;
     };
     AtomicProperty.prototype._updateValue = function () {
