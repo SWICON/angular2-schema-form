@@ -9,12 +9,12 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { TerminatorService } from './terminator.service';
-import { WidgetFactory } from './widgetfactory';
+import {TerminatorService} from './terminator.service';
+import {WidgetFactory} from './widgetfactory';
 
 @Component({
   selector: 'sf-widget-chooser',
-  template: `<div #target></div>`,
+  template: '<div #target></div>'
 })
 export class WidgetChooserComponent implements OnChanges {
 
@@ -27,11 +27,10 @@ export class WidgetChooserComponent implements OnChanges {
   private widgetInstance: any;
   private ref: ComponentRef<any>;
 
-  constructor(
-    private widgetFactory: WidgetFactory = null,
-    private cdr: ChangeDetectorRef,
-    private terminator: TerminatorService,
-  ) { }
+  constructor(private widgetFactory: WidgetFactory = null,
+              private cdr: ChangeDetectorRef,
+              private terminator: TerminatorService,) {
+  }
 
   ngOnInit() {
     this.terminator.onDestroy.subscribe(destroy => {
