@@ -6,7 +6,7 @@ import {ObjectProperty} from './objectproperty';
 import {ArrayProperty} from './arrayproperty';
 import {SchemaValidatorFactory} from '../schemavalidatorfactory';
 import {ValidatorRegistry} from './validatorregistry';
-import {_omit} from 'lodash.omit';
+import {omit} from 'lodash.omit';
 
 export class FormPropertyFactory {
   constructor(private schemaValidatorFactory: SchemaValidatorFactory, private validatorRegistry: ValidatorRegistry) {
@@ -33,7 +33,8 @@ export class FormPropertyFactory {
 
     if (schema.$ref) {
       const found = this.schemaValidatorFactory.getSchema(parent.root.schema, schema.$ref);
-      const refSchema = Object.assign({}, found, _omit(schema, ['$ref']));
+      const oldSchema = omit(schema, ['$ref']);
+      const refSchema = Object.assign({}, found, oldSchema);
       switch (refSchema.type) {
         case 'integer':
         case 'number':
