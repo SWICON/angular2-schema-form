@@ -19,12 +19,10 @@ import {isUndefined} from 'util';
 @Component({
   selector: 'sf-form-element',
   template: `
-    <ng-template *ngIf="formProperty.visible">
-      <sf-widget-chooser
-        (widgetInstanciated)="onWidgetInstanciated($event)"
-        [widgetInfo]="formProperty.schema.widget">
-      </sf-widget-chooser>
-    </ng-template>`
+    <sf-widget-chooser *ngIf="formProperty.visible"
+                       (widgetInstanciated)="onWidgetInstanciated($event)"
+                       [widgetInfo]="formProperty.schema.widget">
+    </sf-widget-chooser>`
 })
 export class FormElementComponent implements OnInit {
 

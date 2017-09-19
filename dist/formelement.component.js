@@ -49,7 +49,7 @@ var FormElementComponent = (function () {
     FormElementComponent.decorators = [
         { type: Component, args: [{
                     selector: 'sf-form-element',
-                    template: "\n    <ng-template *ngIf=\"formProperty.visible\">\n      <sf-widget-chooser\n        (widgetInstanciated)=\"onWidgetInstanciated($event)\"\n        [widgetInfo]=\"formProperty.schema.widget\">\n      </sf-widget-chooser>\n    </ng-template>"
+                    template: "\n    <sf-widget-chooser *ngIf=\"formProperty.visible\"\n                       (widgetInstanciated)=\"onWidgetInstanciated($event)\"\n                       [widgetInfo]=\"formProperty.schema.widget\">\n    </sf-widget-chooser>"
                 },] },
     ];
     /** @nocollapse */
