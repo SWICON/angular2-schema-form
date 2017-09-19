@@ -11,9 +11,6 @@ var FormElementComponent = (function () {
     }
     FormElementComponent.prototype.ngOnInit = function () {
         this.parseButtons();
-        if (!isUndefined(this.readOnly)) {
-            this.widget.schema.readOnly = this.readOnly;
-        }
     };
     FormElementComponent.prototype.parseButtons = function () {
         if (this.formProperty.schema.buttons !== undefined) {
@@ -44,6 +41,9 @@ var FormElementComponent = (function () {
         this.widget.name = id;
         this.widget.id = id;
         this.widget.control = this.control;
+        if (!isUndefined(this.readOnly)) {
+            this.widget.schema.readOnly = this.readOnly;
+        }
     };
     FormElementComponent.counter = 0;
     FormElementComponent.decorators = [

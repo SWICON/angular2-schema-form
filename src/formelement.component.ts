@@ -44,9 +44,6 @@ export class FormElementComponent implements OnInit {
 
   ngOnInit() {
     this.parseButtons();
-    if (!isUndefined(this.readOnly)) {
-      this.widget.schema.readOnly = this.readOnly;
-    }
   }
 
   private parseButtons() {
@@ -80,6 +77,10 @@ export class FormElementComponent implements OnInit {
     this.widget.name = id;
     this.widget.id = id;
     this.widget.control = this.control;
+
+    if (!isUndefined(this.readOnly)) {
+      this.widget.schema.readOnly = this.readOnly;
+    }
   }
 
 }
