@@ -28,6 +28,7 @@ export class FormElementComponent implements OnInit {
 
   private static counter = 0;
 
+  @Input() visible: boolean;
   @Input() readOnly: boolean;
   @Input() placeholder: string;
   @Input() formProperty: FormProperty;
@@ -81,6 +82,11 @@ export class FormElementComponent implements OnInit {
     }
     if (!isUndefined(this.placeholder)) {
       this.widget.schema.placeholder = this.placeholder;
+    }
+    if (!isUndefined(this.visible)
+      && this.visible === true
+      && this.widget.schema.visibleIf) {
+      delete this.widget.schema.visibleIf;
     }
   }
 

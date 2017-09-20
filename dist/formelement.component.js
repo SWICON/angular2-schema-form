@@ -47,6 +47,11 @@ var FormElementComponent = (function () {
         if (!isUndefined(this.placeholder)) {
             this.widget.schema.placeholder = this.placeholder;
         }
+        if (!isUndefined(this.visible)
+            && this.visible === true
+            && this.widget.schema.visibleIf) {
+            delete this.widget.schema.visibleIf;
+        }
     };
     FormElementComponent.counter = 0;
     FormElementComponent.decorators = [
@@ -60,6 +65,7 @@ var FormElementComponent = (function () {
         { type: ActionRegistry, },
     ]; };
     FormElementComponent.propDecorators = {
+        'visible': [{ type: Input },],
         'readOnly': [{ type: Input },],
         'placeholder': [{ type: Input },],
         'formProperty': [{ type: Input },],
