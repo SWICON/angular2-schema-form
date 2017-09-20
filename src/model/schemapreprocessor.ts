@@ -110,7 +110,7 @@ export class SchemaPreprocessor {
     if (!jsonSchema.layout) {
       SchemaPreprocessor.createLayout(jsonSchema);
     } else {
-      jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path);
+      jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path, {});
     }
   }
 
@@ -126,11 +126,14 @@ export class SchemaPreprocessor {
     });
   }
 
-  private static normalizeLayout(layout: any[], path: string) {
+  private static normalizeLayout(layout: any[], path: string, parentItem) {
     const res = layout.map(item => {
       if (isString(item)) {
         item = {
-          key: item
+          key: item,
+          readOnly: parentItem.readOnly,
+          visible: parentItem.visible,
+          placeholder: parentItem.placeholder
         };
       } else if (item.key) {
         // do nothing
@@ -140,20 +143,20 @@ export class SchemaPreprocessor {
           case 'column':
           case 'tab':
           case 'step':
-            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+            item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
             break;
           case 'steps':
             if (!item.items.every(i => i.hasOwnProperty('title') && i.type === 'step')) {
               schemaError(`'steps' layout element should contain 'step' type items`, path);
             } else {
-              item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+              item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
             }
             break;
           case 'tabs':
             if (!item.items.every(i => i.type === 'tab')) {
               schemaError(`'tabs' layout element should contain only 'tab' type of elements.`, path);
             } else {
-              item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+              item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
             }
             break;
           default:
@@ -162,7 +165,7 @@ export class SchemaPreprocessor {
         }
       } else if (isObject(item) && item.items && isArray(item.items)) {
         item.type = 'row';
-        item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+        item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
       } else {
         schemaError('Unknown layout element.', path);
       }

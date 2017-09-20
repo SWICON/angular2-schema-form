@@ -108,7 +108,7 @@ var SchemaPreprocessor = (function () {
             SchemaPreprocessor.createLayout(jsonSchema);
         }
         else {
-            jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path);
+            jsonSchema.layout = SchemaPreprocessor.normalizeLayout(jsonSchema.layout, path, {});
         }
     };
     SchemaPreprocessor.createLayout = function (jsonSchema) {
@@ -122,11 +122,14 @@ var SchemaPreprocessor = (function () {
             });
         });
     };
-    SchemaPreprocessor.normalizeLayout = function (layout, path) {
+    SchemaPreprocessor.normalizeLayout = function (layout, path, parentItem) {
         var res = layout.map(function (item) {
             if (isString(item)) {
                 item = {
-                    key: item
+                    key: item,
+                    readOnly: parentItem.readOnly,
+                    visible: parentItem.visible,
+                    placeholder: parentItem.placeholder
                 };
             }
             else if (item.key) {
@@ -138,14 +141,14 @@ var SchemaPreprocessor = (function () {
                     case 'column':
                     case 'tab':
                     case 'step':
-                        item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                        item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
                         break;
                     case 'steps':
                         if (!item.items.every(function (i) { return i.hasOwnProperty('title') && i.type === 'step'; })) {
                             schemaError("'steps' layout element should contain 'step' type items", path);
                         }
                         else {
-                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
                         }
                         break;
                     case 'tabs':
@@ -153,7 +156,7 @@ var SchemaPreprocessor = (function () {
                             schemaError("'tabs' layout element should contain only 'tab' type of elements.", path);
                         }
                         else {
-                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                            item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
                         }
                         break;
                     default:
@@ -163,7 +166,7 @@ var SchemaPreprocessor = (function () {
             }
             else if (isObject(item) && item.items && isArray(item.items)) {
                 item.type = 'row';
-                item.items = SchemaPreprocessor.normalizeLayout(item.items, path);
+                item.items = SchemaPreprocessor.normalizeLayout(item.items, path, item);
             }
             else {
                 schemaError('Unknown layout element.', path);
