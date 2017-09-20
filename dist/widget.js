@@ -13,7 +13,14 @@ var Widget = (function () {
         this.id = '';
         this.name = '';
         this.schema = {};
+        this.overrides = {};
     }
+    Widget.prototype.isReadOnly = function () {
+        return this.overrides.readOnly || this.schema.readOnly || false;
+    };
+    Widget.prototype.getPlaceholder = function () {
+        return this.overrides.placeholder || this.schema.placeholder || '';
+    };
     Widget.prototype.ngAfterViewInit = function () {
         this.formProperty.control = this.control;
     };

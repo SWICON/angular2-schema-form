@@ -9,6 +9,15 @@ export abstract class Widget<T extends FormProperty> implements AfterViewInit {
   id: string = '';
   name: string = '';
   schema: any = {};
+  overrides: any = {};
+
+  isReadOnly() {
+    return this.overrides.readOnly || this.schema.readOnly || false;
+  }
+
+  getPlaceholder() {
+    return this.overrides.placeholder || this.schema.placeholder || '';
+  }
 
   ngAfterViewInit() {
     this.formProperty.control = this.control;

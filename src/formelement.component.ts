@@ -76,17 +76,11 @@ export class FormElementComponent implements OnInit {
     this.widget.name = id;
     this.widget.id = id;
     this.widget.control = this.control;
-
     if (!isUndefined(this.readOnly)) {
-      this.widget.schema.readOnly = this.readOnly;
+      this.widget.overrides.readOnly = this.readOnly;
     }
     if (!isUndefined(this.placeholder)) {
-      this.widget.schema.placeholder = this.placeholder;
-    }
-    if (!isUndefined(this.visible)
-      && this.visible === true
-      && this.widget.schema.visibleIf) {
-      delete this.widget.schema.visibleIf;
+      this.widget.overrides.placeholder = this.placeholder;
     }
   }
 
