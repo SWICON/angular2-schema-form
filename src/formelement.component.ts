@@ -29,6 +29,7 @@ export class FormElementComponent implements OnInit {
   private static counter = 0;
 
   @Input() readOnly: boolean;
+  @Input() placeholder: string;
   @Input() formProperty: FormProperty;
   control: FormControl = new FormControl('', () => null);
 
@@ -77,6 +78,9 @@ export class FormElementComponent implements OnInit {
 
     if (!isUndefined(this.readOnly)) {
       this.widget.schema.readOnly = this.readOnly;
+    }
+    if (!isUndefined(this.placeholder)) {
+      this.widget.schema.placeholder = this.placeholder;
     }
   }
 

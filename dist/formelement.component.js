@@ -44,6 +44,9 @@ var FormElementComponent = (function () {
         if (!isUndefined(this.readOnly)) {
             this.widget.schema.readOnly = this.readOnly;
         }
+        if (!isUndefined(this.placeholder)) {
+            this.widget.schema.placeholder = this.placeholder;
+        }
     };
     FormElementComponent.counter = 0;
     FormElementComponent.decorators = [
@@ -58,6 +61,7 @@ var FormElementComponent = (function () {
     ]; };
     FormElementComponent.propDecorators = {
         'readOnly': [{ type: Input },],
+        'placeholder': [{ type: Input },],
         'formProperty': [{ type: Input },],
     };
     return FormElementComponent;

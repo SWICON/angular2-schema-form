@@ -6,6 +6,7 @@ export declare class FormElementComponent implements OnInit {
     private actionRegistry;
     private static counter;
     readOnly: boolean;
+    placeholder: string;
     formProperty: FormProperty;
     control: FormControl;
     widget: Widget<any>;
