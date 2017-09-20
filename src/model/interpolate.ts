@@ -5,7 +5,7 @@ const AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 const ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
 const ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 const TOKEN_MATCHER = /{([^{}]*)}/g;
-const REF_MATCHER = /\B\$\w+/g;
+const REF_MATCHER = /\B\$\$?[.\[\]*\d\w]+/g;
 
 const utils = {
   resolveVariable: function resolveVariable(o, s) {

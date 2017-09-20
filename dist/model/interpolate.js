@@ -3,7 +3,7 @@ var AGGREGATE_FUNC_MATCHER = /(sum|sub|mul|div)\((.*?)\)/g;
 var ARITHMETIC_OP_MATCHER2 = /{([^}^%^\/^\-^+^*]+)}/g;
 var ARITHMETIC_OP_MATCHER = /[*\/%\-+]/g;
 var TOKEN_MATCHER = /{([^{}]*)}/g;
-var REF_MATCHER = /\B\$\w+/g;
+var REF_MATCHER = /\B\$\$?[.\[\]*\d\w]+/g;
 var utils = {
     resolveVariable: function resolveVariable(o, s) {
         s = s.replace(/\[(\*|\w+)]/g, '.$1');
