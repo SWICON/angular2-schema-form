@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, OnChanges, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, OnChanges, EventEmitter, AfterViewInit } from '@angular/core';
 import { Action, ActionRegistry, FormPropertyFactory, FormProperty, ValidatorRegistry, Validator } from './model';
 import { TerminatorService } from './terminator.service';
 export declare function useFactory(schemaValidatorFactory: any, validatorRegistry: any): FormPropertyFactory;
-export declare class FormComponent implements OnChanges {
+export declare class FormComponent implements OnChanges, AfterViewInit {
     private formPropertyFactory;
     private actionRegistry;
     private validatorRegistry;
@@ -27,6 +27,7 @@ export declare class FormComponent implements OnChanges {
     rootProperty: FormProperty;
     constructor(formPropertyFactory: FormPropertyFactory, actionRegistry: ActionRegistry, validatorRegistry: ValidatorRegistry, cdr: ChangeDetectorRef, terminator: TerminatorService);
     ngOnChanges(changes: any): void;
+    ngAfterViewInit(): void;
     private setValidators();
     private setActions();
     reset(): void;

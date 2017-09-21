@@ -4,7 +4,8 @@ import {
   OnChanges,
   EventEmitter,
   Input,
-  Output
+  Output,
+  AfterViewInit,
 } from '@angular/core';
 
 import {
@@ -44,7 +45,7 @@ export function useFactory(schemaValidatorFactory, validatorRegistry) {
     TerminatorService,
   ]
 })
-export class FormComponent implements OnChanges {
+export class FormComponent implements OnChanges, AfterViewInit {
 
   @Input() schema: any = null;
 
@@ -90,7 +91,7 @@ export class FormComponent implements OnChanges {
       }
       SchemaPreprocessor.preprocess(this.schema);
       this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
-      this.isInitialized.emit(true);
+      // this.isInitialized.emit(true);
       this.rootProperty.valueChanges.subscribe(value => {
         this.onChange.emit({value: value});
       });
@@ -104,6 +105,10 @@ export class FormComponent implements OnChanges {
       this.rootProperty.reset(this.model, false);
       this.cdr.detectChanges();
     }
+  }
+
+  ngAfterViewInit() {
+    this.isInitialized.emit(true);
   }
 
   private setValidators() {
@@ -138,10 +143,6 @@ export class FormComponent implements OnChanges {
       (<PropertyGroup>this.rootProperty).forEachChildRecursive(field => {
         if (!isDirty && field.control) {
           isDirty = field.control.touched || field.control.dirty;
-
-          if (isUndefined(isDirty)) {
-            const p = 23432;
-          }
         }
       })
     }

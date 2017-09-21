@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, } from '@angular/core';
 import { ActionRegistry, FormPropertyFactory, SchemaPreprocessor, ValidatorRegistry } from './model';
 import { SchemaValidatorFactory } from './schemavalidatorfactory';
 import { WidgetFactory } from './widgetfactory';
 import { TerminatorService } from './terminator.service';
 import { PropertyGroup } from './model/formproperty';
-import { isUndefined } from 'util';
 export function useFactory(schemaValidatorFactory, validatorRegistry) {
     return new FormPropertyFactory(schemaValidatorFactory, validatorRegistry);
 }
@@ -41,7 +40,7 @@ var FormComponent = (function () {
             }
             SchemaPreprocessor.preprocess(this.schema);
             this.rootProperty = this.formPropertyFactory.createProperty(this.schema);
-            this.isInitialized.emit(true);
+            // this.isInitialized.emit(true);
             this.rootProperty.valueChanges.subscribe(function (value) {
                 _this.onChange.emit({ value: value });
             });
@@ -54,6 +53,9 @@ var FormComponent = (function () {
             this.rootProperty.reset(this.model, false);
             this.cdr.detectChanges();
         }
+    };
+    FormComponent.prototype.ngAfterViewInit = function () {
+        this.isInitialized.emit(true);
     };
     FormComponent.prototype.setValidators = function () {
         this.validatorRegistry.clear();
@@ -84,9 +86,6 @@ var FormComponent = (function () {
             this.rootProperty.forEachChildRecursive(function (field) {
                 if (!isDirty && field.control) {
                     isDirty = field.control.touched || field.control.dirty;
-                    if (isUndefined(isDirty)) {
-                        var p = 23432;
-                    }
                 }
             });
         }
