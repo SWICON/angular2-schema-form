@@ -23,6 +23,9 @@ export declare class FormComponent implements OnChanges, AfterViewInit {
     onErrorChange: EventEmitter<{
         value: any[];
     }>;
+    onDirtyChange: EventEmitter<{
+        value: boolean;
+    }>;
     isInitialized: EventEmitter<boolean>;
     rootProperty: FormProperty;
     constructor(formPropertyFactory: FormPropertyFactory, actionRegistry: ActionRegistry, validatorRegistry: ValidatorRegistry, cdr: ChangeDetectorRef, terminator: TerminatorService);

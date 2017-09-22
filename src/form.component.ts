@@ -61,6 +61,8 @@ export class FormComponent implements OnChanges, AfterViewInit {
 
   @Output() onErrorChange = new EventEmitter<{ value: any[] }>();
 
+  @Output() onDirtyChange = new EventEmitter<{ value: boolean }>();
+
   @Output() isInitialized = new EventEmitter<boolean>();
 
   rootProperty: FormProperty = null;
@@ -94,6 +96,7 @@ export class FormComponent implements OnChanges, AfterViewInit {
       // this.isInitialized.emit(true);
       this.rootProperty.valueChanges.subscribe(value => {
         this.onChange.emit({value: value});
+        this.onDirtyChange.emit({value: this.isDirty()});
       });
       this.rootProperty.errorsChanges.subscribe(value => {
         this.onErrorChange.emit({value: value});

@@ -20,6 +20,7 @@ var FormComponent = (function () {
         this.onChange = new EventEmitter();
         this.isValid = new EventEmitter();
         this.onErrorChange = new EventEmitter();
+        this.onDirtyChange = new EventEmitter();
         this.isInitialized = new EventEmitter();
         this.rootProperty = null;
     }
@@ -43,6 +44,7 @@ var FormComponent = (function () {
             // this.isInitialized.emit(true);
             this.rootProperty.valueChanges.subscribe(function (value) {
                 _this.onChange.emit({ value: value });
+                _this.onDirtyChange.emit({ value: _this.isDirty() });
             });
             this.rootProperty.errorsChanges.subscribe(function (value) {
                 _this.onErrorChange.emit({ value: value });
@@ -161,6 +163,7 @@ var FormComponent = (function () {
         'onChange': [{ type: Output },],
         'isValid': [{ type: Output },],
         'onErrorChange': [{ type: Output },],
+        'onDirtyChange': [{ type: Output },],
         'isInitialized': [{ type: Output },],
     };
     return FormComponent;
