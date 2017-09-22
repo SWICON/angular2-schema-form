@@ -64,7 +64,8 @@ var ObjectProperty = (function (_super) {
         _super.prototype._runValidation.call(this);
         if (this._errors) {
             this._errors.forEach(function (error) {
-                var prop = _this.searchProperty(_this.path + error.path.slice(1));
+                var path = _this.path !== '/' ? _this.path + error.path.slice(1) : error.path.slice(1);
+                var prop = _this.searchProperty(path);
                 if (prop) {
                     prop.extendErrors(error);
                 }
