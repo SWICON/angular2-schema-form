@@ -55,6 +55,7 @@ var ZSchemaValidatorFactory = (function (_super) {
                     var inners = error.inner.map(function (ierr) {
                         if (ierr.path === '#/') {
                             ierr.path += ierr.params[0];
+                            ierr.path = ierr.path.substring(1);
                         }
                         return ierr;
                     });

@@ -50,6 +50,7 @@ export class ZSchemaValidatorFactory extends SchemaValidatorFactory {
           const inners = error.inner.map(ierr => {
             if (ierr.path === '#/') {
               ierr.path += ierr.params[0];
+              ierr.path = ierr.path.substring(1);
             }
             return ierr;
           });
