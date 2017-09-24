@@ -22,6 +22,7 @@ export class SchemaPreprocessor {
     if (jsonSchema.type === 'object') {
       SchemaPreprocessor.checkProperties(jsonSchema, path);
       SchemaPreprocessor.checkAndCreateLayout(jsonSchema, path);
+      SchemaPreprocessor.createWorkflowRequiredFields(jsonSchema);
     } else if (jsonSchema.type === 'array') {
       SchemaPreprocessor.checkItems(jsonSchema, path);
     }
@@ -36,64 +37,17 @@ export class SchemaPreprocessor {
     }
   }
 
-  private static checkAndCreateFieldsets(jsonSchema: any, path: string) {
-    if (jsonSchema.fieldsets === undefined) {
-      if (jsonSchema.order !== undefined) {
-        SchemaPreprocessor.replaceOrderByFieldsets(jsonSchema);
-      } else {
-        SchemaPreprocessor.createFieldsets(jsonSchema);
-      }
-    }
-    SchemaPreprocessor.checkFieldsUsage(jsonSchema, path);
-  }
-
-  private static checkFieldsUsage(jsonSchema, path: string) {
-    let fieldsId: string[] = Object.keys(jsonSchema.properties);
-    let usedFields = {};
-    for (let fieldset of jsonSchema.fieldsets) {
-      for (let fieldId of fieldset.fields) {
-        if (usedFields[fieldId] === undefined) {
-          usedFields[fieldId] = [];
+  private static createWorkflowRequiredFields(jsonSchema) {
+    if (jsonSchema.meta && jsonSchema.meta.kind === 'workflow') {
+      const required = [];
+      const transitions = jsonSchema.meta.workflow.transitions;
+      Object.keys(transitions).forEach(key => {
+        if (Array.isArray(transitions[key].required)) {
+          required.push(...transitions[key].required);
         }
-        usedFields[fieldId].push(fieldset.id);
-      }
+      });
+      jsonSchema.required = required.filter((v, i, a) => a.indexOf(v) === i); // unique items only
     }
-
-    for (let fieldId of fieldsId) {
-      if (usedFields.hasOwnProperty(fieldId)) {
-        if (usedFields[fieldId].length > 1) {
-          schemaError(`${fieldId} is referenced by more than one fieldset: ${usedFields[fieldId]}`, path);
-        }
-        delete usedFields[fieldId];
-      } else if (jsonSchema.required.indexOf(fieldId) > -1) {
-        schemaError(`${fieldId} is a required field but it is not referenced as part of a 'order' or a 'fieldset' property`, path);
-      } else {
-        delete jsonSchema[fieldId];
-        schemaWarning(`Removing unreferenced field ${fieldId}`, path);
-      }
-    }
-
-    for (let remainingfieldsId in usedFields) {
-      if (usedFields.hasOwnProperty(remainingfieldsId)) {
-        schemaWarning(`Referencing non-existent field ${remainingfieldsId} in one or more fieldsets`, path);
-      }
-    }
-  }
-
-  private static createFieldsets(jsonSchema) {
-    jsonSchema.order = Object.keys(jsonSchema.properties);
-    SchemaPreprocessor.replaceOrderByFieldsets(jsonSchema);
-  }
-
-  private static replaceOrderByFieldsets(jsonSchema) {
-    jsonSchema.fieldsets = [{
-      id: 'fieldset-default',
-      title: jsonSchema.title || '',
-      description: jsonSchema.description || '',
-      name: jsonSchema.name || '',
-      fields: jsonSchema.order
-    }];
-    delete jsonSchema.order;
   }
 
   private static normalizeWidget(fieldSchema: any) {
